@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: layout(~{::title}, ~{::body})">
+<head>
+    <title>Resultado del Examen</title>
+</head>
+<body>
+<div class="card">
+    <h2>Resultado del Examen</h2>
+    <p><strong>Fecha:</strong> <span th:text="${#temporals.format(r.fechaRealizacion,'dd/MM/yyyy HH:mm')}"></span></p>
+    <p><strong>Puntuación:</strong> <span th:text="${r.resultadoTotal}"></span></p>
+    <p><strong>Interpretación:</strong> <span th:text="${r.interpretacion}"></span></p>
+    <a th:href="@{/paciente/pdf/{id}(id=${r.id})}">Descargar Informe en PDF</a>
+</div>
+</body>
+</html>
+
+<!-- historial.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: layout(~{::title}, ~{::body})">
+<head>
+    <title>Historial de Exámenes</title>
+</head>
+<body>
+<h2>Historial de Exámenes</h2>
+<div class="cards-container">
+    <div class="card" th:each="r : ${historial}">
+        <p><strong>Fecha:</strong> <span th:text="${#temporals.format(r.fechaRealizacion,'dd/MM/yyyy')}"></span></p>
+        <p><strong>Examen:</strong> <span th:text="${r.examen.titulo}"></span></p>
+        <p><strong>Resultado:</strong> <span th:text="${r.resultadoTotal}"></span></p>
+        <a th:href="@{/paciente/resultado/{id}(id=${r.id})}">Ver Detalles</a> |
+        <a th:href="@{/paciente/pdf/{id}(id=${r.id})}">Descargar PDF</a>
+    </div>
+</div>
+</body>
+</html>

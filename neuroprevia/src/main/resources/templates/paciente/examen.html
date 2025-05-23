@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: layout(~{::title}, ~{::body})">
+<head>
+    <title th:text="${examen.titulo}">Examen</title>
+</head>
+<body>
+<h2 th:text="${examen.titulo}">Examen</h2>
+<progress id="barra" max="0" value="0"></progress>
+<form th:action="@{/paciente/examen/{id}/submit(id=${examen.id})}" method="post" id="formExamen">
+    <div th:each="p, stat : ${examen.preguntas}" class="card pregunta" th:attr="data-index=${stat.index}" th:if="${stat.index == 0}">
+        <p><strong>P${stat.index + 1}:</strong> <span th:text="${p.texto}"></span></p>
+        <div th:if="${p.tipoRespuesta=='opcion_multiple'}" th:each="opt : ${p.respuestasPosibles}">
+            <label>
+                <input type="radio" th:name="${'resp_' + p.id}" th:value="${opt.id}" onchange="siguiente(${stat.index})"/>
+                <span th:text="${opt.textoRespuesta}"></span>
+            </label><br/>
+        </div>
+        <div th:if="${p.tipoRespuesta=='escala'}" th:each="opt : ${p.respuestasPosibles}">
+            <label>
+                <input type="radio" th:name="${'resp_' + p.id}" th:value="${opt.id}" onchange="siguiente(${stat.index})"/>
+                <span th:text="${opt.valorNumerico}"></span>
+            </label><br/>
+        </div>
+    </div>
+    <button type="submit" id="btnEnviar" style="display:none">Finalizar Examen</button>
+</form>
+<script>
+    const total = /*[[${#lists.size(examen.preguntas)}]]*/0;
+    let actual = 0;
+    document.getElementById('barra').max = total;
+    function siguiente(idx) {
+        document.querySelector(`[data-index='${idx}']`).style.display = 'none';
+        actual = idx + 1;
+        if (actual < total) {
+            document.querySelector(`[data-index='${actual}']`).style.display = '';
+        } else {
+            document.getElementById('btnEnviar').style.display = '';
+        }
+        document.getElementById('barra').value = actual;
+    }
+</script>
+</body>
+</html>

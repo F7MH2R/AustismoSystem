@@ -30,7 +30,7 @@ public class LoginController {
         if (usuario == null) return "redirect:/login";
 
         model.addAttribute("usuario", usuario);
-        return "paciente/home/home";
+        return "paciente/home"; // ya no usas "paciente/home/home"
     }
     // Mostrar formulario de login
     @GetMapping("/admin/home")

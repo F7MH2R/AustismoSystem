@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: layout(~{::title}, ~{::body})">
+<head>
+    <title>Mi Perfil</title>
+</head>
+<body>
+<h2>Mi Perfil</h2>
+
+<form th:action="@{/paciente/perfil}" th:object="${paciente}" method="post">
+    <label>Nombre: <input th:field="*{nombre}" readonly/></label><br/>
+    <label>Apellido: <input th:field="*{apellido}" readonly/></label><br/>
+    <label>Correo: <input th:field="*{correo}" readonly/></label><br/>
+    <label>Fecha de Nacimiento: <input th:field="*{fechaNacimiento}" type="date" readonly/></label><br/>
+    <label>Edad:
+        <span th:text="${T(java.time.Period).between(paciente.fechaNacimiento, T(java.time.LocalDate).now()).getYears()}"></span> años
+    </label><br/>
+    <label>Género: <input th:field="*{genero}" readonly/></label><br/>
+    <label>Teléfono: <input th:field="*{telefono}" /></label><br/>
+    <label>Dirección: <input th:field="*{direccion}" /></label><br/>
+    <label>Alergias: <input th:field="*{alergias}" /></label><br/><br/>
+    <button type="submit">Guardar Cambios</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!-- templates/paciente/examenes.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::body})">
+<head>
+    <title>Exámenes Disponibles</title>
+</head>
+<body>
+<h2>Exámenes Disponibles</h2>
+
+<label>Filtrar por tipo:</label>
+<select id="filtroTipo" onchange="filtrarPorTipo()">
+    <option value="">Todos</option>
+    <option value="infantil">Infantil</option>
+    <option value="adulto">Adulto</option>
+    <option value="general">General</option>
+</select>
+
+<div class="cards-container" id="listaExamenes">
+    <div class="card" th:each="e : ${examenes}" th:attr="data-tipo=${e.tipo}">
+        <h3 th:text="${e.titulo}">Título del Examen</h3>
+        <p><strong>Tipo:</strong> <span th:text="${e.tipo}"></span></p>
+        <p><strong>Descripción:</strong> <span th:text="${e.descripcion}"></span></p>
+        <p><strong>Duración:</strong> <span th:text="${e.duracion}"></span> minutos</p>
+        <p><strong>Preguntas:</strong> <span th:text="${#lists.size(e.preguntas)}"></span></p>
+        <a th:href="@{/paciente/examen/{id}(id=${e.id})}">Iniciar Examen</a>
+    </div>
+</div>
+
+<script>
+    function filtrarPorTipo() {
+        const tipo = document.getElementById('filtroTipo').value;
+        document.querySelectorAll('#listaExamenes .card').forEach(card => {
+            card.style.display = (!tipo || card.dataset.tipo === tipo) ? '' : 'none';
+        });
+    }
+</script>
+</body>
+</html>
