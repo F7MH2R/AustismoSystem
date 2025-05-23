@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del test</title>
+    <link th:replace="~{fragments/inicio :: bootstrap-css}">
+</head>
+<body>
+<div class="container mb-3 col-lg-8">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center">Detalles del test</h1>
+        </div>
+    </div>
+    <div th:if="${examen}" class="row">
+        <form th:object="${examen}" class="container mt-4">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" class="form-control" id="titulo" th:field="*{titulo}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3" readonly></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo</label>
+                <input type="text" class="form-control" id="tipo" th:value="*{tipo}" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="edadMinima" class="form-label">Edad mínima</label>
+                <input type="number" class="form-control" id="edadMinima" th:field="*{edadMinima}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="edadMaxima" class="form-label">Edad máxima</label>
+                <input type="number" class="form-control" id="edadMaxima" th:field="*{edadMaxima}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha de creación</label>
+                <input type="text" class="form-control" id="fecha" th:value="${#dates.format(examen.fechaCreacion, 'dd/MM/yyyy HH:mm')}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="creadoPor" class="form-label">Creado por (Email)</label>
+                <input type="text" class="form-control" id="creadoPor" th:value="${examen.creadoPor.correo}" readonly>
+            </div>
+        </form>
+
+    </div>
+    <div th:unless="${examen}" class="row">
+        <div class="col">
+            <h2 class="text-center">Sin datos</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div th:replace="~{fragments/inicio :: mensajes}"></div>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/inicio :: boostrap-script}"></script>
+</body>
+</html>
