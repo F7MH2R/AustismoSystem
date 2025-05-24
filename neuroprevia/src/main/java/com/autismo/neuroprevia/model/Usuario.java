@@ -109,4 +109,17 @@ public class Usuario {
     public void setCreadoEn(Timestamp creadoEn) {
         this.creadoEn = creadoEn;
     }
+
+
+
+
+
+    public boolean isVerificado() {
+        return activo;
+    }
+
+    public void setVerificado(boolean verificado) {
+        this.activo = verificado;
+    }
+
 }

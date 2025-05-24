@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas del Sistema</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .kpi-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .kpi-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 220px;
+            border-radius: 8px;
+            box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+            background: #f9f9f9;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+
+        .chart-title {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>📊 Panel de Estadísticas del Sistema</h2>
+
+<div class="kpi-container">
+
+
+    <div class="kpi-box">
+        <h4>Total de Exámenes Aplicados</h4>
+        <strong th:text="${totalExamenes}">0</strong>
+    </div>
+    <div class="kpi-box">
+        <h4>Pacientes Nuevos (últimos 7 días)</h4>
+        <strong th:text="${nuevosPacientes}">0</strong>
+    </div>
+    <div class="kpi-box">
+        <h4>Total de Doctores</h4>
+        <strong th:text="${totalDoctores}">0</strong>
+    </div>
+    <div class="kpi-box">
+        <h4>Total de Administradores</h4>
+        <strong th:text="${totalAdmins}">0</strong>
+    </div>
+</div>
+<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+    <a th:href="@{/admin/dashboard/home}" style="
+        background-color: #155f82;
+        color: white;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        font-weight: bold;
+    " onmouseover="this.style.backgroundColor='#0f4a66'; this.style.transform='scale(1.05)'"
+       onmouseout="this.style.backgroundColor='#155f82'; this.style.transform='scale(1)'">
+        ← Volver al Home
+    </a>
+</div>
+<hr>
+
+<div class="charts-container">
+
+    <div>
+        <div class="chart-title">Distribución por Género (PACIENTES)</div>
+        <canvas id="generoChart"></canvas>
+    </div>
+
+    <div>
+        <div class="chart-title">Distribución por Edad (PACIENTES)</div>
+        <canvas id="edadChart"></canvas>
+    </div>
+
+    <div>
+        <div class="chart-title">Nivel de Riesgo Global</div>
+        <canvas id="riesgoChart"></canvas>
+    </div>
+
+    <div>
+        <div class="chart-title">Distribución por Género (DOCTORES)</div>
+        <canvas id="generoDoctorChart"></canvas>
+    </div>
+
+    <div>
+        <div class="chart-title">Exámenes por Edad (PACIENTES)</div>
+        <canvas id="examenesEdadChart"></canvas>
+    </div>
+
+    <div>
+        <div class="chart-title">Exámenes por Género (PACIENTES)</div>
+        <canvas id="examenesGeneroChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+    // GÉNERO PACIENTES
+    fetch('/api/estadisticas/pacientes/examenes/genero')
+        .then(res => res.json())
+        .then(data => {
+            new Chart(document.getElementById('generoChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Exámenes por Género (Pacientes)',
+                        data: Object.values(data)
+                    }]
+                }
+            });
+        });
+
+    // EDAD PACIENTES
+    fetch('/api/estadisticas/pacientes/examenes/edad')
+        .then(res => res.json())
+        .then(data => {
+            new Chart(document.getElementById('edadChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Exámenes por Edad (Pacientes)',
+                        data: Object.values(data),
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                    }]
+                }
+            });
+        });
+
+    // RIESGO GLOBAL
+    fetch('/api/estadisticas/admin/riesgo')
+        .then(res => res.json())
+        .then(data => {
+            new Chart(document.getElementById('riesgoChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Nivel de Riesgo',
+                        data: Object.values(data)
+                    }]
+                }
+            });
+        });
+
+    // GÉNERO DOCTORES
+    fetch('/api/estadisticas/doctores/genero')
+        .then(res => res.json())
+        .then(data => {
+            new Chart(document.getElementById('generoDoctorChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Género de Doctores',
+                        data: Object.values(data)
+                    }]
+                }
+            });
+        });
+
+    // EXÁMENES POR EDAD PACIENTES
+    fetch('/api/estadisticas/pacientes/examenes/edad')
+        .then(res => res.json())
+        .then(data => {
+            new Chart(document.getElementById('examenesEdadChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Exámenes por Edad (Pacientes)',
+                        data: Object.values(data),
+                        backgroundColor: 'rgba(255, 159, 64, 0.6)'
+                    }]
+                }
+            });
+        });
+
+    // EXÁMENES POR GÉNERO PACIENTES
+    fetch('/api/estadisticas/pacientes/examenes/genero')
+        .then(res => res.json())
+        .then(data => {
+            new Chart(document.getElementById('examenesGeneroChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Exámenes por Género (Pacientes)',
+                        data: Object.values(data),
+                        backgroundColor: 'rgba(153, 102, 255, 0.6)'
+                    }]
+                }
+            });
+        });
+</script>
+
+</body>
+</html>
