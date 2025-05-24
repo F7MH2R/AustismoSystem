@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Informe Clínico</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+<h2>Informe Clínico de [[${paciente}]]</h2>
+
+<p><strong>Examen:</strong> [[${examen}]]</p>
+<p><strong>Fecha de Realización:</strong> [[${fecha}]]</p>
+<p><strong>Puntaje Total:</strong> [[${total}]]</p>
+
+<h4>Respuestas del Paciente:</h4>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Pregunta</th>
+        <th>Respuesta</th>
+        <th>Valor Numérico</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${respuestas}">
+        <td th:text="${item.pregunta}"></td>
+        <td th:text="${item.respuesta}"></td>
+        <td th:text="${item.valor}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<form th:action="@{'/especialista/informes/interpretar/' + ${id}}" method="post">
+    <div class="mb-3">
+        <label for="interpretacion" class="form-label">Interpretación del Doctor</label>
+        <textarea name="interpretacion" id="interpretacion" class="form-control" rows="5"
+                  placeholder="Ej: Se recomienda psicólogo..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Informe</button>
+</form>
+</body>
+</html>

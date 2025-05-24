@@ -15,6 +15,8 @@
             <table class="table table-striped table-bordered table-hover align-middle">
                 <thead class="table-light">
                 <tr>
+                    <th>Paciente</th>
+                    <th>Examen</th>
                     <th>Fecha</th>
                     <th>Resultado</th>
                     <th>Interpretación</th>
@@ -23,7 +25,9 @@
                 </thead>
                 <tbody>
                 <tr th:each="informe : ${informes}">
-                    <td th:text="${#dates.format(informe.fechaRealizacion, 'dd/MM/yyyy')}">01/01/2025</td>
+                    <td th:text="${informe.nombrePaciente}">Nombre Apellido</td>
+                    <td th:text="${informe.examenTitulo}">Nombre Examen</td>
+                    <td th:text="${informe.fechaRealizacion?.dayOfMonth + '/' + informe.fechaRealizacion?.monthValue + '/' + informe.fechaRealizacion?.year}">01/01/2025</td>
                     <td th:text="${informe.resultadoTotal}">0.0</td>
                     <td th:text="${informe.interpretacion}">Texto</td>
                     <td>

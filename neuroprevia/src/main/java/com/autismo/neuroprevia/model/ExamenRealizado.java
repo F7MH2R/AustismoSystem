@@ -26,4 +26,30 @@ public class ExamenRealizado {
 
     @Column(columnDefinition = "TEXT")
     private String interpretacion;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public Examen getExamen() {
+        return examen;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public Timestamp getFechaRealizacion() {
+        return fechaRealizacion;
+    }
+
+    public float getResultadoTotal() {
+        return resultadoTotal;
+    }
+
+    public String getInterpretacion() {
+        return interpretacion;
+    }
+
 }
