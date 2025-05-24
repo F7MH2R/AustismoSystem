@@ -16,4 +16,16 @@ public class RespuestaPosible {
 
     private String textoRespuesta;
     private float valorNumerico;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getTextoRespuesta() {
+        return textoRespuesta;
+    }
+
+    public float getValorNumerico() {
+        return valorNumerico;
+    }
 }

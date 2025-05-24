@@ -31,11 +31,14 @@
                     <td th:text="${informe.resultadoTotal}">0.0</td>
                     <td th:text="${informe.interpretacion}">Texto</td>
                     <td>
+                        <a th:href="@{'/especialista/informes/' + ${informe.id}}" class="btn btn-sm btn-info">
+                             Ver
+                        </a>
                         <a th:href="@{'/especialista/informes/' + ${informe.id}}" class="btn btn-sm btn-warning">
-                            ✏️ Editar
+                             Editar
                         </a>
                         <a th:href="@{'/especialista/informes/' + ${informe.id} + '/pdf'}" class="btn btn-sm btn-danger" target="_blank">
-                            🧾 PDF
+                             PDF
                         </a>
                     </td>
                 </tr>
