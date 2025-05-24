@@ -18,6 +18,7 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final DetallesUsuarioService detallesUsuarioService;
+    private final CustomAuthenticationSuccessHandler successHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,11 +33,12 @@ public class SecurityConfig {
                             "/registrarse/**", "/registrarPaciente/**"
                     ).permitAll(); // Si hay alguna ruta que este dando problemas, pueden agregarla aca, para probar
                     auth.requestMatchers("/examenes/**", "/preguntas/**", "/respuesta/**").hasAnyRole(ADMIN, DOCTOR);
+                    auth.anyRequest().authenticated();
                 }
                 )
                 .formLogin(formLogin -> {
                     formLogin.loginPage("/login");
-                    //formLogin.defaultSuccessUrl("/", true);
+                    formLogin.successHandler(successHandler);
                     formLogin.failureUrl("/login?error");
                 }).logout(logout -> {
                     logout.logoutUrl("/logout");
