@@ -29,8 +29,8 @@ public class LoginController {
 
     // Mostrar formulario de login
     @GetMapping("/paciente/home")
-    public String mostrarhome(Model model, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+    public String mostrarhome(Model model, @AuthenticationPrincipal UsuarioPrincipal principal) {
+        Usuario usuario = principal.getUsuario();
         if (usuario == null) return "redirect:/login";
 
         model.addAttribute("usuario", usuario);
@@ -38,8 +38,8 @@ public class LoginController {
     }
     // Mostrar formulario de login
     @GetMapping("/admin/home")
-    public String mostrarhomeadmin(Model model, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+    public String mostrarhomeadmin(Model model, @AuthenticationPrincipal UsuarioPrincipal principal) {
+        Usuario usuario = principal.getUsuario();
         if (usuario == null) return "redirect:/login";
 
         model.addAttribute("usuario", usuario);
