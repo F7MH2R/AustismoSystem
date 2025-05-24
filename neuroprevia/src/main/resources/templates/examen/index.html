@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear examen</title>
+    <link th:replace="~{fragments/inicio :: bootstrap-css}">
+</head>
+<body>
+
+<div class="container mt-3 col-lg-8">
+    <div class="row">
+        <h1 class="text-center">Crear nuevo test</h1>
+    </div>
+    <div class="row">
+        <form th:action="@{/examenes/crear}" class="form" method="post" th:object="${examen}">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">T&iacute;tulo:</label>
+                <input class="form-control" type="text" id="titulo" aria-describedby="titulo-help" th:field="*{titulo}" required>
+                <div class="form-text" id="titulo-help">T&iacute;tulo que se mostrar&aacute; al usuario al tomar el test</div>
+            </div>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripci&oacute;n:</label>
+                <textarea class="form-control" id="descripcion" aria-describedby="desc-help" th:field="*{descripcion}" required></textarea>
+                <div id="desc-help" class="form-text">Descripcion detallada sobre el test que se va a crear.</div>
+            </div>
+            <div class="mb-3">
+                <label for="edadMinima" class="form-label">Edad m&iacute;nima:</label>
+                <input class="form-control" type="number" id="edadMinima" aria-describedby="min-help" th:field="*{edadMinima}" min="1" required>
+                <div class="form-text" id="min-help">Edad m&iacute;nima (expresada en a&ntilde;os) para tomar el test</div>
+            </div>
+            <div class="mb-3">
+                <label for="edadMaxima" class="form-label">Edad m&aacute;xima:</label>
+                <input class="form-control" type="number" id="edadMaxima" aria-describedby="max-help" th:field="*{edadMaxima}" max="200" min="1" required>
+                <div class="form-text" id="max-help">Edad m&aacute;xima (expresada en a&ntilde;os) para tomar el test</div>
+            </div>
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo de examen</label>
+                <select class="form-select" id="tipo" th:field="*{tipo}" required aria-describedby="tipo-help">
+                    <option value="" disabled selected>Seleccione un tipo</option>
+                    <option th:each="tipo : ${tipos}"
+                            th:value="${tipo.name()}"
+                            th:text="${tipo.value}">
+                    </option>
+                </select>
+                <div class="form-text" id="tipo-help">Define el tipo de test que se va a crear</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<script th:replace="~{fragments/inicio :: boostrap-script}" ></script>
+</body>
+</html>
