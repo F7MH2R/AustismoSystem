@@ -93,7 +93,18 @@ public class DoctorService {
                 .sum();
     }
 
+    public List<RespuestaDetalleDto> obtenerRespuestasConOpciones(Long idExamenRealizado) {
+        List<RespuestaDada> dadas = respuestaDadaRepo.findByExamenRealizado_Id(idExamenRealizado.intValue());
 
+        return dadas.stream().map(r -> {
+            Pregunta p = preguntaRepo.findById(r.getPregunta().getId()).orElse(null);
+            RespuestaPosible rp = respuestaPosibleRepo.findById(r.getRespuesta().getId()).orElse(null);
+
+            RespuestaDetalleDto dto = new RespuestaDetalleDto(p, rp);
+            dto.setRespuestas(respuestaPosibleRepo.findByPregunta(p)); // ✅ aquí asignás las opciones
+            return dto;
+        }).toList();
+    }
 
 
     public List<Seguimiento> obtenerSeguimientosDelDoctor(int idDoctor) {

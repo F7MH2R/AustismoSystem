@@ -1,10 +1,11 @@
 package com.autismo.neuroprevia.controller;
 
-import com.autismo.neuroprevia.model.ExamenRealizado;
-import com.autismo.neuroprevia.model.Seguimiento;
-import com.autismo.neuroprevia.model.Usuario;
+import com.autismo.neuroprevia.model.*;
 import com.autismo.neuroprevia.model.dto.InformeDto;
 import com.autismo.neuroprevia.model.dto.RespuestaDetalleDto;
+import com.autismo.neuroprevia.repository.examenRealizadoRepository;
+import com.autismo.neuroprevia.repository.respuestaDadaRepository;
+import com.autismo.neuroprevia.repository.respuestaPosibleRepository;
 import com.autismo.neuroprevia.service.DoctorService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,6 +23,15 @@ public class EspecialistaController {
 
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private examenRealizadoRepository examenRealizadoRepo;
+
+    @Autowired
+    private respuestaDadaRepository respuestaDadaRepo;
+
+    @Autowired
+    private respuestaPosibleRepository respuestaPosibleRepo;
+
 
     // PUNTO 4 – Informes Clínicos
     @GetMapping("/especialista/informes")
@@ -46,6 +58,43 @@ public class EspecialistaController {
         model.addAttribute("respuestas", respuestas);
         return "especialista/home/informes/ver";
     }
+
+    //Punto 4 -Editar
+    @GetMapping("/especialista/informes/{id}/editar")
+    public String editarTodo(@PathVariable Long id, Model model) {
+        ExamenRealizado er = examenRealizadoRepo.findById(id.intValue()).orElseThrow();
+        String interpretacion = er.getInterpretacion();
+
+        List<RespuestaDetalleDto> detalles = doctorService.obtenerRespuestasConOpciones(id);
+        model.addAttribute("respuestas", detalles);
+        model.addAttribute("interpretacion", interpretacion);
+        model.addAttribute("idExamenRealizado", id);
+        return "especialista/home/informes/editar";
+    }
+
+    @PostMapping("/especialista/informes/{id}/guardar-todo")
+    public String guardarTodo(@PathVariable Long id,
+                              @RequestParam String interpretacion,
+                              @RequestParam("respuestasSeleccionadas") List<Integer> respuestasSeleccionadas) {
+
+        ExamenRealizado examen = examenRealizadoRepo.findById(id.intValue()).orElseThrow();
+        examen.setInterpretacion(interpretacion);
+        examenRealizadoRepo.save(examen);
+
+        respuestaDadaRepo.deleteAll(respuestaDadaRepo.findByExamenRealizado_Id(id.intValue()));
+
+        for (Integer idRespuesta : respuestasSeleccionadas) {
+            RespuestaPosible rp = respuestaPosibleRepo.findById(idRespuesta).orElseThrow();
+            RespuestaDada nueva = new RespuestaDada();
+            nueva.setExamenRealizado(examen);
+            nueva.setPregunta(rp.getPregunta());
+            nueva.setRespuesta(rp);
+            respuestaDadaRepo.save(nueva);
+        }
+
+        return "redirect:/especialista/informes";
+    }
+
 
 
 

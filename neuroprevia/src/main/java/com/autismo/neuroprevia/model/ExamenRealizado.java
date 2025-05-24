@@ -52,4 +52,9 @@ public class ExamenRealizado {
         return interpretacion;
     }
 
+    public void setInterpretacion(String interpretacion) {
+        this.interpretacion = interpretacion;
+    }
+
+
 }

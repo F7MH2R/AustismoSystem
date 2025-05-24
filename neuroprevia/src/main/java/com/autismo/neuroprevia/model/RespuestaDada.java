@@ -34,4 +34,17 @@ public class RespuestaDada {
     public RespuestaPosible getRespuesta() {
         return respuesta;
     }
+
+    public void setExamenRealizado(ExamenRealizado examenRealizado) {
+        this.examenRealizado = examenRealizado;
+    }
+
+    public void setPregunta(Pregunta pregunta) {
+        this.pregunta = pregunta;
+    }
+
+    public void setRespuesta(RespuestaPosible respuesta) {
+        this.respuesta = respuesta;
+    }
+
 }

@@ -28,4 +28,11 @@ public class RespuestaPosible {
     public float getValorNumerico() {
         return valorNumerico;
     }
+
+    public Pregunta getPregunta() {
+        return pregunta;
+    }
+
+
+
 }
