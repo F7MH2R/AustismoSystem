@@ -4,9 +4,6 @@ import com.autismo.neuroprevia.model.enumeration.TipoExamen;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
-
-
 @Builder
 @Data
 public class ExamenDto {

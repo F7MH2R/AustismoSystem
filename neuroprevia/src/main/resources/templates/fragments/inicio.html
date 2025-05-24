@@ -11,18 +11,15 @@
 <div th:fragment="mensajes" class="toast-container position-fixed bottom-0 end-0 p-3">
     <div th:if="${mensaje}" id="mensajeToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
-            <img src="..." class="rounded me-2" alt="...">
-            <strong class="me-auto">Bootstrap</strong>
+            <strong class="me-auto">Acci&oacute;n completada</strong>
             <small>11 mins ago</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body">
-            Hello, world! This is a toast message.
-        </div>
+        <div class="toast-body" th:text="${mensaje}">Mensaje por defecto</div>
     </div>
     <div th:if="${mensajeError}" id="errorToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
-            <strong class="me-auto">Error al obtener los datos</strong>
+            <strong class="me-auto">Error en el proceso</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body" th:text="${mensajeError}">Error</div>
