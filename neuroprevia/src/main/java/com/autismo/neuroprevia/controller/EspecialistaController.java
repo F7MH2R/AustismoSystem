@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -76,7 +77,8 @@ public class EspecialistaController {
     public String guardarCambiosInforme(@PathVariable Long id,
                                         @RequestParam("interpretacion") String interpretacion,
                                         @RequestParam("respuestasSeleccionadas") List<Integer> respuestasSeleccionadas,
-                                        HttpSession session) {
+                                        HttpSession session,
+                                        RedirectAttributes redirectAttributes) {
 
         Usuario doctor = (Usuario) session.getAttribute("usuarioLogueado");
         if (doctor == null || !doctor.getRol().equals("DOCTOR")) return "redirect:/login";
@@ -100,6 +102,7 @@ public class EspecialistaController {
             }
         }
 
+        redirectAttributes.addFlashAttribute("guardado", true);
         return "redirect:/especialista/informes";
     }
 

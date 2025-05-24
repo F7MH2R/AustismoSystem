@@ -48,5 +48,16 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:if="${guardado}">
+    Swal.fire({
+        icon: 'success',
+        title: 'Cambios guardados',
+        text: 'El informe ha sido actualizado correctamente.',
+        timer: 2000,
+        showConfirmButton: false
+    });
+</script>
+
 </body>
 </html>
