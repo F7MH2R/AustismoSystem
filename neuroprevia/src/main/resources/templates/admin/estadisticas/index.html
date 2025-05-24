@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas del Sistema</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h2>Panel de Estadísticas</h2>
+
+<p>Total de exámenes aplicados: <strong th:text="${totalExamenes}"></strong></p>
+<p>Pacientes nuevos esta semana: <strong th:text="${nuevosPacientes}"></strong></p>
+
+<div>
+    <canvas id="generoChart" width="400" height="200"></canvas>
+</div>
+
+<div>
+    <canvas id="edadChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Scripts de gráficos con datos simulados (luego los cargamos dinámicamente) -->
+<script>
+    const generoChart = new Chart(document.getElementById('generoChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Masculino', 'Femenino', 'Otro'],
+            datasets: [{
+                label: 'Distribución por Género',
+                data: [45, 35, 20], // reemplazar con valores dinámicos
+                borderWidth: 1
+            }]
+        }
+    });
+
+    const edadChart = new Chart(document.getElementById('edadChart'), {
+        type: 'bar',
+        data: {
+            labels: ['0-5 años', '6-10', '11-15', '16+'],
+            datasets: [{
+                label: 'Distribución por Edad',
+                data: [10, 25, 30, 15], // valores de ejemplo
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
+</body>
+</html>

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface examenRealizadoRepository extends JpaRepository<ExamenRealizado, Integer> {
+    long count();
+
 }
