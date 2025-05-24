@@ -9,6 +9,7 @@ import com.autismo.neuroprevia.repository.respuestaPosibleRepository;
 import com.autismo.neuroprevia.service.DoctorService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +37,8 @@ public class EspecialistaController {
 
     // PUNTO 4 – Informes Clínicos
     @GetMapping("/especialista/informes")
-    public String verInformes(Model model, HttpSession session) {
-        Usuario doctor = (Usuario) session.getAttribute("usuarioLogueado");
+    public String verInformes(Model model, @AuthenticationPrincipal UsuarioPrincipal principal) {
+        Usuario doctor = principal.getUsuario();
         if (doctor == null || !doctor.getRol().equals("DOCTOR")) return "redirect:/login";
 
         List<InformeDto> informes = doctorService.obtenerInformesRealizados();
@@ -48,8 +49,8 @@ public class EspecialistaController {
 
     // PUNTO 4 - Ver Informes completos
     @GetMapping("/especialista/informes/{id}")
-    public String verInforme(@PathVariable Long id, Model model, HttpSession session) {
-        Usuario doctor = (Usuario) session.getAttribute("usuarioLogueado");
+    public String verInforme(@PathVariable Long id, Model model, @AuthenticationPrincipal UsuarioPrincipal principal) {
+        Usuario doctor = principal.getUsuario();
         if (doctor == null || !doctor.getRol().equals("DOCTOR")) return "redirect:/login";
 
         InformeDto informe = doctorService.obtenerInformePorId(id);
@@ -77,10 +78,10 @@ public class EspecialistaController {
     public String guardarCambiosInforme(@PathVariable Long id,
                                         @RequestParam("interpretacion") String interpretacion,
                                         @RequestParam("respuestasSeleccionadas") List<Integer> respuestasSeleccionadas,
-                                        HttpSession session,
+                                        @AuthenticationPrincipal UsuarioPrincipal principal,
                                         RedirectAttributes redirectAttributes) {
 
-        Usuario doctor = (Usuario) session.getAttribute("usuarioLogueado");
+        Usuario doctor = principal.getUsuario();
         if (doctor == null || !doctor.getRol().equals("DOCTOR")) return "redirect:/login";
 
         // ✅ 1. Actualizar interpretación
