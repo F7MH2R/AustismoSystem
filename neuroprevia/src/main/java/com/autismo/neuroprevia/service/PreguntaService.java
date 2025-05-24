@@ -35,4 +35,8 @@ public class PreguntaService {
     public List<Pregunta> obtenerPreguntasPorIdExamen(int idExamen) {
         return repository.findAllByExamenIdOrderByOrdenAsc(idExamen);
     }
+
+    public Optional<Pregunta> obtenerPorId(int idPregunta) {
+        return repository.findById(idPregunta);
+    }
 }
