@@ -34,7 +34,7 @@
                         <td th:text="${iterStat.index + 1}">1</td>
                         <td th:text="${detalle.pregunta.texto}">Texto de pregunta</td>
                         <td>
-                            <select class="form-select" name="respuestasSeleccionadas" required>
+                            <select class="form-select" name="respuestasSeleccionadas[]" required>
                                 <option th:each="opcion : ${detalle.respuestas}"
                                         th:value="${opcion.id}"
                                         th:text="${opcion.textoRespuesta}"

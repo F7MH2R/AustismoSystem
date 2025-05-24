@@ -73,27 +73,36 @@ public class EspecialistaController {
     }
 
     @PostMapping("/especialista/informes/{id}/guardar-todo")
-    public String guardarTodo(@PathVariable Long id,
-                              @RequestParam String interpretacion,
-                              @RequestParam("respuestasSeleccionadas") List<Integer> respuestasSeleccionadas) {
+    public String guardarCambiosInforme(@PathVariable Long id,
+                                        @RequestParam("interpretacion") String interpretacion,
+                                        @RequestParam("respuestasSeleccionadas") List<Integer> respuestasSeleccionadas,
+                                        HttpSession session) {
 
-        ExamenRealizado examen = examenRealizadoRepo.findById(id.intValue()).orElseThrow();
-        examen.setInterpretacion(interpretacion);
-        examenRealizadoRepo.save(examen);
+        Usuario doctor = (Usuario) session.getAttribute("usuarioLogueado");
+        if (doctor == null || !doctor.getRol().equals("DOCTOR")) return "redirect:/login";
 
-        respuestaDadaRepo.deleteAll(respuestaDadaRepo.findByExamenRealizado_Id(id.intValue()));
+        // ✅ 1. Actualizar interpretación
+        ExamenRealizado er = examenRealizadoRepo.findById(id.intValue()).orElseThrow();
+        er.setInterpretacion(interpretacion);
+        examenRealizadoRepo.save(er);
 
-        for (Integer idRespuesta : respuestasSeleccionadas) {
-            RespuestaPosible rp = respuestaPosibleRepo.findById(idRespuesta).orElseThrow();
-            RespuestaDada nueva = new RespuestaDada();
-            nueva.setExamenRealizado(examen);
-            nueva.setPregunta(rp.getPregunta());
-            nueva.setRespuesta(rp);
-            respuestaDadaRepo.save(nueva);
+        // ✅ 2. Actualizar respuestas dadas
+        List<RespuestaDada> dadas = respuestaDadaRepo.findByExamenRealizado_Id(id.intValue());
+
+        for (int i = 0; i < dadas.size(); i++) {
+            RespuestaDada r = dadas.get(i);
+            Integer nuevaRespuestaId = respuestasSeleccionadas.get(i);
+            RespuestaPosible nuevaRespuesta = respuestaPosibleRepo.findById(nuevaRespuestaId).orElse(null);
+
+            if (nuevaRespuesta != null) {
+                r.setRespuesta(nuevaRespuesta);
+                respuestaDadaRepo.save(r);
+            }
         }
 
         return "redirect:/especialista/informes";
     }
+
 
 
 
