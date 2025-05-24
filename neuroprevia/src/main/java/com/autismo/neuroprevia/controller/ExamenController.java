@@ -3,6 +3,7 @@ package com.autismo.neuroprevia.controller;
 import com.autismo.neuroprevia.model.Examen;
 import com.autismo.neuroprevia.model.Pregunta;
 import com.autismo.neuroprevia.model.Usuario;
+import com.autismo.neuroprevia.model.UsuarioPrincipal;
 import com.autismo.neuroprevia.model.dto.ExamenDto;
 import com.autismo.neuroprevia.model.dto.PreguntaDto;
 import com.autismo.neuroprevia.model.enumeration.TipoExamen;
@@ -12,6 +13,7 @@ import com.autismo.neuroprevia.service.PreguntaService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +44,8 @@ public class ExamenController {
     }
 
     @PostMapping("/crear")
-    public String crear(@ModelAttribute("examen") ExamenDto examen, RedirectAttributes attributes, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+    public String crear(@ModelAttribute("examen") ExamenDto examen, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal) {
+        Usuario usuario = usuarioPrincipal.getUsuario();
         Examen entity = service.crearExamen(examen, usuario.getId());
         attributes.addFlashAttribute("examen", entity);
         return "redirect:/examenes/ver/".concat(String.valueOf(entity.getId())).concat("/preguntas");

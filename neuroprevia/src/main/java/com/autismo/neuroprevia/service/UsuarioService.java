@@ -26,4 +26,8 @@ public class UsuarioService {
     public Optional<Usuario> autenticar(String correo, String password) {
         return usuarioRepository.findByCorreoAndPassword(correo, password);
     }
+
+    public Optional<Usuario> obtenerPorEmail(String correo) {
+        return usuarioRepository.findByCorreo(correo);
+    }
 }

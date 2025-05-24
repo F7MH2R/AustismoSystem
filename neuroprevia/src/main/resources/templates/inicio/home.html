@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+    <link th:replace="~{fragments/inicio :: bootstrap-css}">
+</head>
+<body>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center">Bienvenido</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div sec:authorize="isAuthenticated()">
+            <p class="text-center" th:text="'Sesión iniciada como: ' + ${#authentication.name}"></p>
+        </div>
+        <div class="col text-center">
+            <a class="btn btn-success" th:href="@{/login}">Iniciar sesi&oacute;n</a>
+        </div>
+    </div>
+</div>
+<script th:replace="~{fragments/inicio :: boostrap-script}"></script>
+</body>
+</html>
