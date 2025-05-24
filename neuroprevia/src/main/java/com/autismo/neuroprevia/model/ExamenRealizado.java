@@ -1,11 +1,15 @@
 package com.autismo.neuroprevia.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "examenes_realizados")
 public class ExamenRealizado {
 

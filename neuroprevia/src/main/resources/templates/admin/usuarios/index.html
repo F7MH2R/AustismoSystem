@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Usuarios</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f6fa;
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .top-actions a {
+      background-color: #155f82;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .top-actions a:hover {
+      background-color: #0f4a66;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    thead {
+      background-color: #155f82;
+      color: white;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f0f2f5;
+    }
+
+    tr:hover {
+      background-color: #e8f4fc;
+    }
+
+    td form {
+      display: inline;
+    }
+
+    button {
+      background-color: #f39c12;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      margin: 0 2px;
+    }
+
+    button:hover {
+      background-color: #d68910;
+    }
+
+    a.edit-link {
+      background-color: #3498db;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    a.edit-link:hover {
+      background-color: #217dbb;
+    }
+
+    .delete-button {
+      background-color: #e74c3c;
+    }
+
+    .delete-button:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Gestión de Usuarios</h2>
+
+<div class="top-actions">
+  <a th:href="@{/admin/usuarios/crear}">+ Crear nuevo usuario</a>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Correo</th>
+    <th>Rol</th>
+    <th>Activo</th>
+    <th>Verificado</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="u : ${usuarios}">
+    <td th:text="${u.nombre + ' ' + u.apellido}"></td>
+    <td th:text="${u.correo}"></td>
+    <td th:text="${u.rol}"></td>
+    <td th:text="${u.activo} ? 'Sí' : 'No'"></td>
+    <td th:text="${u.rol == 'DOCTOR' ? (u.verificado ? 'Sí' : 'Pendiente') : '-'}"></td>
+    <td>
+      <a th:href="@{'/admin/usuarios/editar/' + ${u.id}}" class="edit-link">Editar</a>
+      <form th:action="@{'/admin/usuarios/cambiar-estado/' + ${u.id}}" method="post">
+        <button type="submit">Activar/Desactivar</button>
+      </form>
+      <form th:action="@{'/admin/usuarios/eliminar/' + ${u.id}}" method="post">
+        <button type="submit" class="delete-button">Eliminar</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

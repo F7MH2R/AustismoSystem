@@ -2,12 +2,59 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio Paciente</title>
+    <title>Inicio Administrador</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .btn-container {
+            margin-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .admin-btn {
+            background-color: #155f82;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .admin-btn:hover {
+            background-color: #0f4a66;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
 
 <h1>Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!</h1>
-<h1>Rol:, <span th:text="${usuario.rol}">Usuario</span>!</h1>
+
+
+<div class="btn-container">
+    <a class="admin-btn" th:href="@{/admin/usuarios}">👤 Gestión de Usuarios</a>
+    <a class="admin-btn" th:href="@{/admin/estadisticas}">📊 Ver Estadísticas</a>
+</div>
 
 </body>
 </html>
