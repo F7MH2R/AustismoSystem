@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Pregunta para el test</title>
+  <link th:replace="~{fragments/inicio :: bootstrap-css}">
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 class="text-center">Crear preguntas</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <form th:action="@{/preguntas/crear}" th:object="${pregunta}" method="post" class="container mt-4">
+        <div class="mb-3">
+          <label for="texto" class="form-label">Texto de la pregunta</label>
+          <input type="text" class="form-control" id="texto" th:field="*{texto}" placeholder="Ingrese la pregunta" required>
+        </div>
+        <div class="mb-3">
+          <label for="tipoRespuesta" class="form-label">Tipo de respuesta</label>
+          <select class="form-select" id="tipoRespuesta" th:field="*{tipoRespuesta}" required>
+            <option value="" disabled selected>Seleccione un tipo</option>
+            <option th:each="tipo : ${tiposRespuesta}"
+                    th:value="${tipo.name()}"
+                    th:text="${tipo.value}"></option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="orden" class="form-label">Orden</label>
+          <input type="number" class="form-control" id="orden" th:field="*{orden}" min="1" required>
+        </div>
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary">Guardar Pregunta</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script th:replace="~{fragments/inicio :: boostrap-script}"></script>
+</body>
+</html>

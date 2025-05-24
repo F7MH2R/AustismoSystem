@@ -3,17 +3,18 @@ package com.autismo.neuroprevia.controller;
 import com.autismo.neuroprevia.model.Usuario;
 import com.autismo.neuroprevia.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-
+@RequiredArgsConstructor
 public class LoginController {
-
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
 
     // Mostrar formulario de login
     @GetMapping("/login")
@@ -52,28 +53,28 @@ public class LoginController {
     }
 
     // Procesar login
-    @PostMapping("/login")
-    public String procesarLogin(@RequestParam String correo,
-                                @RequestParam String password,
-                                Model model,
-                                HttpSession session) {
-
-        return usuarioService.autenticar(correo, password)
-                .map(usuario -> {
-                    session.setAttribute("usuarioLogueado", usuario);
-
-                    switch (usuario.getRol()) {
-                        case "PACIENTE": return "redirect:/paciente/home";
-                        case "DOCTOR": return "redirect:/especialista/home";
-                        case "ADMIN": return "redirect:/admin/home";
-                        default: return "redirect:/login";
-                    }
-                })
-                .orElseGet(() -> {
-                    model.addAttribute("error", "Correo o contraseña incorrectos");
-                    return "general/login/login";
-                });
-    }
+//    @PostMapping("/login")
+//    public String procesarLogin(@RequestParam("username") String correo,
+//                                @RequestParam String password,
+//                                Model model,
+//                                HttpSession session) {
+//
+//        return usuarioService.autenticar(correo, password)
+//                .map(usuario -> {
+//                    session.setAttribute("usuarioLogueado", usuario);
+//
+//                    switch (usuario.getRol()) {
+//                        case "PACIENTE": return "redirect:/paciente/home";
+//                        case "DOCTOR": return "redirect:/especialista/home";
+//                        case "ADMIN": return "redirect:/admin/home";
+//                        default: return "redirect:/login";
+//                    }
+//                })
+//                .orElseGet(() -> {
+//                    model.addAttribute("error", "Correo o contraseña incorrectos");
+//                    return "general/login/login";
+//                });
+//    }
 
 
     // Mostrar formulario de registro
@@ -90,6 +91,7 @@ public class LoginController {
             model.addAttribute("error", "El correo ya está registrado");
             return "general/registropaciente/registro";
         }
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioService.registrarPaciente(usuario);
         return "redirect:/login";
     }
