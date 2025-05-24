@@ -1,8 +1,84 @@
-<nav xmlns:th="http://www.thymeleaf.org" th:fragment="nav">
-    <a th:href="@{/}">Inicio</a> |
-    <a th:href="@{/paciente/home}">Home Paciente</a> |
-    <a th:href="@{/paciente/examenes}">Exámenes</a> |
-    <a th:href="@{/paciente/historial}">Historial</a> |
-    <a th:href="@{/logout}">Salir</a>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link rel="stylesheet" th:href="@{/css/nav.css}" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto">
+                <li>
+                    <a class="navbar-brand" th:href="@{/}">NeuroPrevía</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{/login}">Iniciar sesión</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{/registrarse}">Registro Paciente</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{/registrodoctor}">Registro Doctor</a>
+                </li>
+
+                <!-- Paciente -->
+                <li class="nav-item" sec:authorize="hasRole('PACIENTE')">
+                    <a class="nav-link" th:href="@{/paciente/home}">Inicio Paciente</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('PACIENTE')">
+                    <a class="nav-link" th:href="@{/paciente/examenes}">Exámenes</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('PACIENTE')">
+                    <a class="nav-link" th:href="@{/paciente/historial}">Historial</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('PACIENTE')">
+                    <a class="nav-link" th:href="@{/paciente/perfil}">Perfil</a>
+                </li>
+
+                <!-- Usuario autenticado -->
+                <li class="nav-item nav-user" sec:authorize="isAuthenticated()">
+                    <span class="nav-text">Hola, <strong th:text="${session.usuarioLogueado.nombre}">Usuario</strong></span>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/logout}">Salir</a>
+                </li>
+
+                <!-- Doctor -->
+                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
+                    <a class="nav-link" th:href="@{/doctor/home}">Inicio Doctor</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
+                    <a class="nav-link" th:href="@{/doctor/pacientes}">Pacientes</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
+                    <a class="nav-link" th:href="@{/doctor/diagnosticos}">Diagnósticos</a>
+                </li>
+
+                <!-- Admin -->
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" th:href="@{/admin/home}">Inicio Admin</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" th:href="@{/admin/usuarios}">Usuarios</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" th:href="@{/admin/examenes}">Exámenes</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" th:href="@{/admin/estadisticas}">Estadísticas</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" th:href="@{/admin/reportes}">Reportes</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
 </nav>
 <hr/>
+</body>
+</html>
