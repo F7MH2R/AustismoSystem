@@ -20,7 +20,7 @@ public class NeuropreviaApplication {
 	private static void crearBaseDatosSiNoExiste() {
 		String url = "jdbc:postgresql://localhost:5432/postgres";
 		String usuario = "postgres";
-		String contraseña = "deku";
+		String contraseña = "1704";
 
 		try (Connection conn = DriverManager.getConnection(url, usuario, contraseña)) {
 			ResultSet rs = conn.createStatement().executeQuery("SELECT 1 FROM pg_database WHERE datname='neuroprevia_db'");

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informes Clínicos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Lista de Informes Clínicos</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-bordered table-hover align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Resultado</th>
+                    <th>Interpretación</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="informe : ${informes}">
+                    <td th:text="${#dates.format(informe.fechaRealizacion, 'dd/MM/yyyy')}">01/01/2025</td>
+                    <td th:text="${informe.resultadoTotal}">0.0</td>
+                    <td th:text="${informe.interpretacion}">Texto</td>
+                    <td>
+                        <a th:href="@{'/especialista/informes/' + ${informe.id}}" class="btn btn-sm btn-warning">
+                            ✏️ Editar
+                        </a>
+                        <a th:href="@{'/especialista/informes/' + ${informe.id} + '/pdf'}" class="btn btn-sm btn-danger" target="_blank">
+                            🧾 PDF
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <a th:href="@{/especialista/home}" class="btn btn-secondary mt-3">Volver al inicio</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

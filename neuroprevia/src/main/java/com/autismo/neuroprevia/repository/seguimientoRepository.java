@@ -4,7 +4,10 @@ import com.autismo.neuroprevia.model.Seguimiento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 
 public interface seguimientoRepository extends JpaRepository<Seguimiento, Integer> {
+    List<Seguimiento> findByIdDoctor(int idDoctor);
 }
