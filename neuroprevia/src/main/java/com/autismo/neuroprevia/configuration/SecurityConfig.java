@@ -30,9 +30,12 @@ public class SecurityConfig {
                             "/", "/login", "/logout",
                             "/images/**", "/css/**", "/js/**",
                             "/registrarse/**", "/registrarPaciente/**"
+                            , "/especialista/**"
                     ).permitAll(); // Si hay alguna ruta que este dando problemas, pueden agregarla aca, para probar
-                    auth.requestMatchers("/examenes/**", "/preguntas/**", "/respuesta/**").hasAnyRole(ADMIN, DOCTOR);
+                   auth.requestMatchers("/examenes/**", "/preguntas/**", "/respuesta/**").hasAnyRole(ADMIN, DOCTOR);
+                            auth.anyRequest().authenticated();
                 }
+                
                 )
                 .formLogin(formLogin -> {
                     formLogin.loginPage("/login");
