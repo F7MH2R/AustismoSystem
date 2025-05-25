@@ -36,7 +36,7 @@
                     <a class="nav-link" th:href="@{/paciente/historial}">Historial</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('PACIENTE')">
-                    <a class="nav-link" th:href="@{/paciente/perfil}">Perfil</a>
+                    <a th:href="@{/paciente/perfil}">Mi Perfil</a>
                 </li>
 
                 <!-- Usuario autenticado -->

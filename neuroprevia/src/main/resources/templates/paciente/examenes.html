@@ -7,33 +7,55 @@
 </head>
 <body>
 <h2>Exámenes Disponibles</h2>
+<form th:action="@{/paciente/examenes}" method="get">
+    <label>Edad:
+        <select name="grupoEdad">
+            <option value="">Todos</option>
+            <option value="niño">Niños</option>
+            <option value="adulto">Adultos</option>
+        </select>
+    </label>
+    <label>Tipo:
+        <select name="tipo">
+            <option value="">Todos</option>
+            <option value="general">General</option>
+            <option value="específica">Específica</option>
+        </select>
+    </label>
+    <button type="submit">Filtrar</button>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Tipo</th>
+        <th>Edad</th>
+        <th># Preguntas</th>
+        <th>Duración (min)</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="e : ${examenes}">
+        <td th:text="${e.titulo}">Título</td>
+        <td th:text="${e.descripcion}">Desc</td>
+        <td th:text="${e.tipo}">Tipo</td>
+        <td>
+            <span th:text="${e.edadMinima}"></span>–<span th:text="${e.edadMaxima}"></span>
+        </td>
+        <td th:text="${e.numeroPreguntas}">0</td>
+        <td th:text="${e.duracion}">0</td>
+        <!-- aquí añadimos la columna de acciones -->
+        <td>
+            <a th:href="@{|/paciente/examen/${e.id}|}"
+               class="btn btn-primary">
+                Realizar examen
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-<label>Filtrar por tipo:</label>
-<select id="filtroTipo" onchange="filtrarPorTipo()">
-    <option value="">Todos</option>
-    <option value="infantil">Infantil</option>
-    <option value="adulto">Adulto</option>
-    <option value="general">General</option>
-</select>
-
-<div class="cards-container" id="listaExamenes">
-    <div class="card" th:each="e : ${examenes}" th:attr="data-tipo=${e.tipo}">
-        <h3 th:text="${e.titulo}">Título del Examen</h3>
-        <p><strong>Tipo:</strong> <span th:text="${e.tipo}"></span></p>
-        <p><strong>Descripción:</strong> <span th:text="${e.descripcion}"></span></p>
-        <p><strong>Duración:</strong> <span th:text="${e.duracion}"></span> minutos</p>
-        <p><strong>Preguntas:</strong> <span th:text="${#lists.size(e.preguntas)}"></span></p>
-        <a th:href="@{/paciente/examen/{id}(id=${e.id})}">Iniciar Examen</a>
-    </div>
-</div>
-
-<script>
-    function filtrarPorTipo() {
-        const tipo = document.getElementById('filtroTipo').value;
-        document.querySelectorAll('#listaExamenes .card').forEach(card => {
-            card.style.display = (!tipo || card.dataset.tipo === tipo) ? '' : 'none';
-        });
-    }
-</script>
 </body>
 </html>

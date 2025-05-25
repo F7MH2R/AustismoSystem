@@ -9,11 +9,14 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +44,20 @@ public class ExamenService {
 
     public Optional<Examen> obtenerPorId(int idExamen) {
         return repository.findById(idExamen);
+    }
+
+    @Autowired
+    private examenRepository repo;
+    public List<Examen> listar(Integer edad, String tipo) {
+        if (edad != null && tipo != null) {
+            return repo.findByEdad(edad).stream()
+                    .filter(e -> e.getTipo().equalsIgnoreCase(tipo))
+                    .collect(Collectors.toList());
+        } else if (edad != null) {
+            return repo.findByEdad(edad);
+        } else if (tipo != null) {
+            return repo.findByTipo(tipo);
+        }
+        return repo.findAll();
     }
 }
