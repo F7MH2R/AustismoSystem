@@ -7,8 +7,10 @@ import com.autismo.neuroprevia.repository.examenRealizadoRepository;
 import com.autismo.neuroprevia.repository.respuestaDadaRepository;
 import com.autismo.neuroprevia.repository.respuestaPosibleRepository;
 import com.autismo.neuroprevia.service.DoctorService;
+import com.autismo.neuroprevia.service.PdfService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -106,6 +108,37 @@ public class EspecialistaController {
         redirectAttributes.addFlashAttribute("guardado", true);
         return "redirect:/especialista/informes";
     }
+
+    private final PdfService pdfService;
+
+    @Autowired
+    public EspecialistaController(DoctorService doctorService, PdfService pdfService) {
+        this.doctorService = doctorService;
+        this.pdfService = pdfService;
+    }
+
+    // Generar el PDF
+    @GetMapping("/informes/{id}/generar-pdf")
+    public ResponseEntity<byte[]> generarPdf(@PathVariable("id") Integer id) {
+        try {
+            InformeDto informe = doctorService.obtenerInformePorId(id.longValue());
+            List<RespuestaDetalleDto> respuestas = doctorService.obtenerRespuestasPorInforme(id.longValue());
+
+            byte[] pdf = pdfService.generarInformePDF(informe, respuestas);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(ContentDisposition.builder("attachment")
+                    .filename("informe-clinico-" + id + ".pdf")
+                    .build());
+
+            return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 
 
