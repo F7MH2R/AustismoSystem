@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::body})">
+<head>
+    <title>Inicio Paciente</title>
+</head>
+<body>
+<div class="container mt-2 col-lg-8">
+    <h1>Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!</h1>
+    <h2>Rol: <span th:text="${usuario.rol}">Usuario</span>!</h2>
+</div>
+</body>
+</html>

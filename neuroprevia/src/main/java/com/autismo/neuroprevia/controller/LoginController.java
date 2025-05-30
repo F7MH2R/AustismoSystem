@@ -25,17 +25,6 @@ public class LoginController {
         return "general/login/login";
     }
 
-
-
-    // Mostrar formulario de login
-    @GetMapping("/paciente/home")
-    public String mostrarhome(Model model, @AuthenticationPrincipal UsuarioPrincipal principal) {
-        Usuario usuario = principal.getUsuario();
-        if (usuario == null) return "redirect:/login";
-
-        model.addAttribute("usuario", usuario);
-        return "paciente/home/home";
-    }
     // Mostrar formulario de login
     @GetMapping("/admin/home")
     public String mostrarhomeadmin(Model model, @AuthenticationPrincipal UsuarioPrincipal principal) {
