@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface examenRealizadoRepository extends JpaRepository<ExamenRealizado, Integer> {
-
+    List<ExamenRealizado> findAllByUsuarioIdOrderByFechaRealizacionDesc(int usuarioId);
 
     //FER
     long count();

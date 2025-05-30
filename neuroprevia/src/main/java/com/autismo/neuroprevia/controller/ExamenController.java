@@ -13,6 +13,7 @@ import com.autismo.neuroprevia.service.PreguntaService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -78,4 +79,22 @@ public class ExamenController {
         attributes.addFlashAttribute("mensaje", "Pregunta agregada con exito");
         return "redirect:/examenes/ver/".concat(String.valueOf(idExamen)).concat("/preguntas");
     }
+
+    @Autowired
+    private ExamenService examenService;
+    @GetMapping
+    public String listar(
+            @RequestParam(required=false) String grupoEdad,   // "niño" o "adulto"
+            @RequestParam(required=false) String tipo,        // "general" o "específica"
+            Model model)
+    {
+        Integer edad = null;
+        if ("niño".equalsIgnoreCase(grupoEdad))  edad = 10;  // ejemplo: edad=10 representativa
+        if ("adulto".equalsIgnoreCase(grupoEdad)) edad = 30;  // edad=30
+
+        List<Examen> examenes = examenService.listar(edad, tipo);
+        model.addAttribute("examenes", examenes);
+        return "paciente/examenes";
+    }
+
 }

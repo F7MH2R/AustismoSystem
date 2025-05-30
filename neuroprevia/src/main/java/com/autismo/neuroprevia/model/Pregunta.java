@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "preguntas")
 @Getter
@@ -21,6 +23,10 @@ public class Pregunta {
     private String texto;
     private String tipoRespuesta;
     private int orden;
+
+    @OneToMany(mappedBy = "pregunta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<RespuestaPosible> respuestaPosibles;
+
 }
 
 

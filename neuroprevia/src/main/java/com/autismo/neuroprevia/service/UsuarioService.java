@@ -28,6 +28,11 @@ public class UsuarioService {
     }
 
     public Optional<Usuario> obtenerPorEmail(String correo) {
+
         return usuarioRepository.findByCorreo(correo);
+    }
+
+    public Usuario guardar(Usuario usuario) {
+        return usuarioRepository.save(usuario);
     }
 }

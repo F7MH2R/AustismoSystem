@@ -3,32 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro de Paciente</title>
-
+    <link rel="stylesheet" th:href="@{/css/registro.css}" />
 </head>
-<body>
+<body class="register-page">
 <h2>Registro de Paciente</h2>
-<form th:action="@{/registrarPaciente}" method="post">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" required><br><br>
+<form th:action="@{/registrarPaciente}"
+      th:object="${usuario}"
+      method="post">
 
-    <label for="apellido">Apellido:</label>
-    <input type="text" id="apellido" name="apellido" required><br><br>
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}" required/><br/><br/>
 
-    <label for="correo">Correo electrónico:</label>
-    <input type="email" id="correo" name="correo" required><br><br>
+    <label>Apellido:</label>
+    <input type="text" th:field="*{apellido}" required/><br/><br/>
 
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password" name="password" required><br><br>
+    <label>Correo:</label>
+    <input type="email" th:field="*{correo}" required/><br/><br/>
 
-    <label for="fechaNacimiento">Fecha de nacimiento:</label>
-    <input type="date" id="fechaNacimiento" name="fechaNacimiento" required><br><br>
+    <label>Contraseña:</label>
+    <input type="password" th:field="*{password}" required/><br/><br/>
 
-    <label for="genero">Género:</label>
-    <select id="genero" name="genero">
+    <label>Fecha nacimiento:</label>
+    <input type="date" th:field="*{fechaNacimiento}" required/><br/><br/>
+
+    <label>Género:</label>
+    <select th:field="*{genero}">
         <option value="M">Masculino</option>
         <option value="F">Femenino</option>
         <option value="Otro">Otro</option>
-    </select><br><br>
+    </select><br/><br/>
 
     <button type="submit">Registrar</button>
 </form>
