@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,4 +43,9 @@ public class ExamenService {
     public Optional<Examen> obtenerPorId(int idExamen) {
         return repository.findById(idExamen);
     }
+
+    public List<Examen> obtenerPorIdCreadoPor(Usuario usuario) {
+        return repository.findAllByCreadoPor(usuario);
+    }
+
 }
