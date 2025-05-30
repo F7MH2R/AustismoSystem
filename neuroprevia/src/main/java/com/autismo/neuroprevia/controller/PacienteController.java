@@ -74,7 +74,7 @@ public class PacienteController {
                 .map(p -> PreguntaDto.builder()
                         .id(p.getId())
                         .texto(p.getTexto())
-                        .tipoRespuesta(TipoRespuesta.valueOf(p.getTipoRespuesta()))
+                        .tipoRespuesta(TipoRespuesta.fromValue(p.getTipoRespuesta()))
                         .orden(p.getOrden())
                         .respuestaPosibles(p.getRespuestaPosibles())
                         .build()

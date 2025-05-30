@@ -17,7 +17,7 @@
         </thead>
         <tbody>
         <tr th:each="r : ${historial}">
-            <td th:text="${#temporals.format(r.fechaRealizacion,'dd/MM/yyyy')}"></td>
+            <td th:text="${#dates.format(r.fechaRealizacion, 'dd/MM/yyyy')}"></td>
             <td th:text="${r.examen.titulo}"></td>
             <td th:text="${r.resultadoTotal}"></td>
             <td>

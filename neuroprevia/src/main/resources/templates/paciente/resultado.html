@@ -7,7 +7,7 @@
 <div class="container mt-2 col-lg-8">
     <div class="card">
         <h2>Resultado del Examen</h2>
-        <p><strong>Fecha:</strong> <span th:text="${#temporals.format(r.fechaRealizacion,'dd/MM/yyyy HH:mm')}"></span></p>
+        <p><strong>Fecha:</strong> <span th:text="${#dates.format(r.fechaRealizacion, 'dd/MM/yyyy')}"></span></p>
         <p><strong>Puntuación:</strong> <span th:text="${r.resultadoTotal}"></span></p>
         <p><strong>Interpretación:</strong> <span th:text="${r.interpretacion}"></span></p>
         <a th:href="@{/paciente/pdf/{id}(id=${r.id})}">Descargar Informe en PDF</a>
