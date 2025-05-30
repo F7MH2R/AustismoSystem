@@ -10,6 +10,7 @@ import com.autismo.neuroprevia.model.enumeration.TipoRespuesta;
 import com.autismo.neuroprevia.service.ExamenService;
 import com.autismo.neuroprevia.service.PreguntaService;
 import com.autismo.neuroprevia.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -38,6 +39,7 @@ import com.autismo.neuroprevia.model.dto.ExamenVista;
 
 @Controller
 @RequestMapping("/paciente")
+@RequiredArgsConstructor
 public class PacienteController {
 
     private final ExamenService                      examenService;
@@ -46,28 +48,7 @@ public class PacienteController {
     private final examenRealizadoRepository          examenRealizadoRepo;
     private final respuestaPosibleRepository         respuestaPosibleRepo;
     private final respuestaDadaRepository            respuestaDadaRepo;
-    private final examenRepository examenRepo;
     private final preguntaRepository preguntaRepo;
-
-    @Autowired
-    public PacienteController(ExamenService examenService,
-                              PreguntaService preguntaService,
-                              UsuarioService usuarioService,
-                              examenRealizadoRepository examenRealizadoRepo,
-                              respuestaPosibleRepository respuestaPosibleRepo,
-                              respuestaDadaRepository respuestaDadaRepo,
-                              examenRepository examenRepo,
-                              preguntaRepository preguntaRepo) {
-        this.examenService        = examenService;
-        this.preguntaService      = preguntaService;
-        this.usuarioService       = usuarioService;
-        this.examenRealizadoRepo  = examenRealizadoRepo;
-        this.respuestaPosibleRepo = respuestaPosibleRepo;
-        this.respuestaDadaRepo    = respuestaDadaRepo;
-        this.examenRepo = examenRepo;
-        this.preguntaRepo = preguntaRepo;
-    }
-
 
     @GetMapping("/home")
     public String homePaciente(
@@ -77,7 +58,6 @@ public class PacienteController {
             return "redirect:/login";
         }
         model.addAttribute("usuario", principal.getUsuario());
-        // Thymeleaf buscará: templates/paciente/home.html
         return "paciente/home";
     }
 
@@ -89,7 +69,7 @@ public class PacienteController {
                 .orElseThrow(() -> new IllegalArgumentException("Examen no encontrado"));
 
         List<PreguntaDto> preguntas = preguntaService
-                .obtenerPreguntasPorIdExamen(id)   // esto te devuelve List<Pregunta>
+                .obtenerPreguntasPorIdExamen(id)
                 .stream()
                 .map(p -> PreguntaDto.builder()
                         .id(p.getId())

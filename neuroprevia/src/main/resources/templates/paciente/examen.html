@@ -5,32 +5,32 @@
     <title th:text="${examen.titulo}">Examen</title>
 </head>
 <body>
+<div class="container mt-2 col-lg-8">
+    <h2 th:text="${examen.titulo}">Título</h2>
+    <p th:text="${examen.descripcion}">Descripción</p>
 
-<h2 th:text="${examen.titulo}">Título</h2>
-<p th:text="${examen.descripcion}">Descripción</p>
+    <form th:action="@{/paciente/examen/{id}/submit(id=${examen.id})}" method="post">
+        <div th:each="pregunta, stat : ${preguntas}">
+            <p>
+                <strong th:text="${stat.index + 1 + '. ' + pregunta.texto}">Pregunta</strong>
+            </p>
 
-<form th:action="@{/paciente/examen/{id}/submit(id=${examen.id})}" method="post">
-    <div th:each="pregunta, stat : ${preguntas}">
-        <p>
-            <strong th:text="${stat.index + 1 + '. ' + pregunta.texto}">Pregunta</strong>
-        </p>
+            <!-- Iteramos sobre las opciones de respuesta -->
+            <div th:each="op : ${pregunta.respuestaPosibles}">
+                <label class="d-block">
+                    <input type="radio"
+                           th:name="${'r' + pregunta.id}"
+                           th:value="${op.id}"
+                           required />
+                    <span th:text="${op.textoRespuesta}">Opción</span>
+                </label>
+            </div>
 
-        <!-- Iteramos sobre las opciones de respuesta -->
-        <div th:each="op : ${pregunta.respuestaPosibles}">
-            <label class="d-block">
-                <input type="radio"
-                       th:name="${'r' + pregunta.id}"
-                       th:value="${op.id}"
-                       required />
-                <span th:text="${op.textoRespuesta}">Opción</span>
-            </label>
+            <hr/>
         </div>
 
-        <hr/>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Enviar Examen</button>
-</form>
-
+        <button type="submit" class="btn btn-primary">Enviar Examen</button>
+    </form>
+</div>
 </body>
 </html>

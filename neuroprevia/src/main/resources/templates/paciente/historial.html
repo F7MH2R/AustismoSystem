@@ -4,27 +4,29 @@
     <title>Historial de Exámenes</title>
 </head>
 <body>
-<h2>Mi Historial de Exámenes</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Fecha</th>
-        <th>Examen</th>
-        <th>Resultado</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="r : ${historial}">
-        <td th:text="${#temporals.format(r.fechaRealizacion,'dd/MM/yyyy')}"></td>
-        <td th:text="${r.examen.titulo}"></td>
-        <td th:text="${r.resultadoTotal}"></td>
-        <td>
-            <a th:href="@{/paciente/resultado/{id}(id=${r.id})}">Ver</a> |
-            <a th:href="@{/paciente/pdf/{id}(id=${r.id})}">PDF</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="container mt-2 col-lg-8">
+    <h2>Mi Historial de Exámenes</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Examen</th>
+            <th>Resultado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${historial}">
+            <td th:text="${#temporals.format(r.fechaRealizacion,'dd/MM/yyyy')}"></td>
+            <td th:text="${r.examen.titulo}"></td>
+            <td th:text="${r.resultadoTotal}"></td>
+            <td>
+                <a th:href="@{/paciente/resultado/{id}(id=${r.id})}">Ver</a> |
+                <a th:href="@{/paciente/pdf/{id}(id=${r.id})}">PDF</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
