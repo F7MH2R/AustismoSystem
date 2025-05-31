@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Ex&aacute;menes completados</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center">
+                Examenes completados
+            </h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col col-auto">
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <td>Ex&aacute;men</td>
+                        <td>Fecha de realizaci&oacute;n</td>
+                        <td>Interpretaci&oacute;n</td>
+                        <td>Resultado total</td>
+                        <td>Usuario que realiz&oacute; el ex&aacute;men</td>
+                        <td>Ver detalles</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="examenRealizado : ${examenesRealizados}">
+                        <td th:text="${examenRealizado.examen.titulo}"></td>
+                        <td th:text="${#dates.format(examenRealizado.fechaRealizacion, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${examenRealizado.interpretacion}"></td>
+                        <td th:text="${examenRealizado.resultadoTotal}"></td>
+                        <td th:text="${examenRealizado.usuario.correo}"></td>
+                        <td>
+                            <a th:href="@{/examenes/realizados/{id}(id=${examenRealizado.id})}">Ver</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

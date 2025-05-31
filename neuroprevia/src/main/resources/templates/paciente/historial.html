@@ -6,27 +6,57 @@
 <body>
 <div class="container mt-2 col-lg-8">
     <h2>Mi Historial de Exámenes</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Examen</th>
-            <th>Resultado</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="r : ${historial}">
-            <td th:text="${#dates.format(r.fechaRealizacion, 'dd/MM/yyyy')}"></td>
-            <td th:text="${r.examen.titulo}"></td>
-            <td th:text="${r.resultadoTotal}"></td>
-            <td>
-                <a th:href="@{/paciente/resultado/{id}(id=${r.id})}">Ver</a> |
-                <a th:href="@{/paciente/pdf/{id}(id=${r.id})}">PDF</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+
+    <!-- Contenedor opcional para darle margen -->
+    <div class="historial-container">
+        <table class="historial-table">
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Examen</th>
+                <th>Resultado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Iteramos sobre cada ExamenRealizado en el historial -->
+            <tr th:each="r : ${historial}">
+                <!-- Formateo de fecha -->
+                <td th:text="${#dates.format(r.fechaRealizacion, 'dd/MM/yyyy')}">
+                    01/01/2025
+                </td>
+
+                <!-- Título del examen -->
+                <td th:text="${r.examen.titulo}">
+                    Título del Examen
+                </td>
+
+                <!-- Resultado: lo mostramos con sufijo “pts” -->
+                <td th:text="${r.resultadoTotal} + ' pts'">
+                    100 pts
+                </td>
+
+                <!-- Acciones: “Ver” y “PDF” -->
+                <td>
+                    <a th:href="@{/paciente/resultado/{id}(id=${r.id})}"
+                       class="accion-btn ver">
+                        Ver
+                    </a>
+                    |
+                    <a th:href="@{/paciente/pdf/{id}(id=${r.id})}"
+                       class="accion-btn pdf">
+                        PDF
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Mensaje si la lista está vacía -->
+        <div th:if="${#lists.isEmpty(historial)}" class="text-center text-muted mt-4">
+            <p>No has realizado ningún examen aún.</p>
+        </div>
+    </div>
 </div>
 </body>
 </html>

@@ -27,14 +27,17 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
+                            auth.requestMatchers("/admin/**").hasRole(ADMIN);
                     auth.requestMatchers(
                             "/", "/login", "/logout",
                             "/images/**", "/css/**", "/js/**",
                             "/registrarse/**", "/registrarPaciente/**"
+                            , "/especialista/**"
                     ).permitAll(); // Si hay alguna ruta que este dando problemas, pueden agregarla aca, para probar
-                    auth.requestMatchers("/examenes/**", "/preguntas/**", "/respuesta/**").hasAnyRole(ADMIN, DOCTOR);
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers("/admin/home","/examenes/**", "/preguntas/**", "/respuesta/**").hasAnyRole(ADMIN, DOCTOR);
+                            auth.anyRequest().authenticated();
                 }
+                
                 )
                 .formLogin(formLogin -> {
                     formLogin.loginPage("/login");

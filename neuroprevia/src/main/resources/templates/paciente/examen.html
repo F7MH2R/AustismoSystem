@@ -6,30 +6,52 @@
 </head>
 <body>
 <div class="container mt-2 col-lg-8">
-    <h2 th:text="${examen.titulo}">Título</h2>
-    <p th:text="${examen.descripcion}">Descripción</p>
+    <h2 th:text="${examen.titulo}">Título del examen</h2>
+    <p th:text="${examen.descripcion}">Descripción del examen</p>
 
-    <form th:action="@{/paciente/examen/{id}/submit(id=${examen.id})}" method="post">
-        <div th:each="pregunta, stat : ${preguntas}">
-            <p>
-                <strong th:text="${stat.index + 1 + '. ' + pregunta.texto}">Pregunta</strong>
-            </p>
+    <!-- Tabla que muestra todas las preguntas -->
+    <form id="formExamen" method="post" th:action="@{/paciente/examen/{id}/submit(id=${examen.id})}">
+        <table class="examen-table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">#</th>
+                <th style="width: 50%;">Pregunta</th>
+                <th style="width: 40%;">Opciones (Selecciona una)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Iteramos sobre la lista de preguntas -->
+            <tr th:each="pregunta, stat : ${preguntas}">
+                <!-- Número de pregunta -->
+                <td class="pregunta-texto" th:text="${stat.index + 1}">1</td>
 
-            <!-- Iteramos sobre las opciones de respuesta -->
-            <div th:each="op : ${pregunta.respuestaPosibles}">
-                <label class="d-block">
-                    <input type="radio"
-                           th:name="${'r' + pregunta.id}"
-                           th:value="${op.id}"
-                           required />
-                    <span th:text="${op.textoRespuesta}">Opción</span>
-                </label>
-            </div>
+                <!-- Texto de la pregunta -->
+                <td class="pregunta-texto" th:text="${pregunta.texto}">
+                    ¿Aquí va el texto de la pregunta…?
+                </td>
 
-            <hr/>
+                <!-- Opciones de respuesta (radios) -->
+                <td>
+                    <div class="opciones-container" th:each="op : ${pregunta.respuestaPosibles}">
+                        <label>
+                            <input type="radio"
+                                   th:name="${'r' + pregunta.id}"
+                                   th:value="${op.id}"
+                                   required />
+                            <span th:text="${op.textoRespuesta}">Opción de ejemplo</span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- Botón Enviar Examen centrado -->
+        <div class="examen-submit-container">
+            <button type="submit"
+                    class="btn btn-primary">
+                Enviar Examen
+            </button>
         </div>
-
-        <button type="submit" class="btn btn-primary">Enviar Examen</button>
     </form>
 </div>
 </body>
