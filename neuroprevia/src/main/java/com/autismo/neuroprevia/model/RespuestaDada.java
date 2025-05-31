@@ -25,4 +25,30 @@ public class RespuestaDada {
     @ManyToOne
     @JoinColumn(name = "id_respuesta", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_respuestadada_respuesta"))
     private RespuestaPosible respuesta;
+
+
+    public ExamenRealizado getExamenRealizado() {
+        return examenRealizado;
+    }
+
+    public Pregunta getPregunta() {
+        return pregunta;
+    }
+
+    public RespuestaPosible getRespuesta() {
+        return respuesta;
+    }
+
+    public void setExamenRealizado(ExamenRealizado examenRealizado) {
+        this.examenRealizado = examenRealizado;
+    }
+
+    public void setPregunta(Pregunta pregunta) {
+        this.pregunta = pregunta;
+    }
+
+    public void setRespuesta(RespuestaPosible respuesta) {
+        this.respuesta = respuesta;
+    }
+
 }

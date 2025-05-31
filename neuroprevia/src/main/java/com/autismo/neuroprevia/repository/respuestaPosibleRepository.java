@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface respuestaPosibleRepository extends JpaRepository<RespuestaPosible, Integer> {
     List<RespuestaPosible> findAllByPregunta(Pregunta pregunta);
+    List<RespuestaPosible> findByPregunta(Pregunta pregunta);
+
     List<RespuestaPosible> findByPreguntaId(Integer preguntaId);
 
 }

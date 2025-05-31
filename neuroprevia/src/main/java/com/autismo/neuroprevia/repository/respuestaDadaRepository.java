@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface respuestaDadaRepository extends JpaRepository<RespuestaDada, Integer> {
+    List<RespuestaDada> findByExamenRealizado_Id(Integer id);
     List<RespuestaDada> findAllByPreguntaInAndExamenRealizado(List<Pregunta> preguntas, ExamenRealizado examenRealizado);
 }

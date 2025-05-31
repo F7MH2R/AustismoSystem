@@ -17,6 +17,8 @@ public interface examenRealizadoRepository extends JpaRepository<ExamenRealizado
     List<ExamenRealizado> findByUsuario_Rol(String rol);
     List<ExamenRealizado> findByUsuario_RolAndFechaRealizacionBetween(String rol, LocalDate desde, LocalDate hasta);
     //FER
+    List<ExamenRealizado> findAll();
+
 
     List<ExamenRealizado> findAllByExamenIn(List<Examen> examenes);
 }
