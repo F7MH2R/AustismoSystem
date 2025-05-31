@@ -1,26 +1,32 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio</title>
-    <link th:replace="~{fragments/inicio :: bootstrap-css}">
+    <title>NeuroPrevia</title>
 </head>
 <body>
-<div class="container mt-4">
-    <div class="row">
-        <div class="col">
-            <h1 class="text-center">Bienvenido</h1>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center">Bienvenido</h1>
+            </div>
         </div>
-    </div>
-    <div class="row">
+        <div sec:authorize="isAnonymous()">
+            <div class="row justify-content-center">
+                <div class="col col-auto">
+                    <p>Debes iniciar sesi&oacute;n para utilizar las funciones del sistema</p>
+                </div>
+            </div>
+        </div>
         <div sec:authorize="isAuthenticated()">
-            <p class="text-center" th:text="'Sesión iniciada como: ' + ${#authentication.name}"></p>
-        </div>
-        <div class="col text-center">
-            <a class="btn btn-success" th:href="@{/login}">Iniciar sesi&oacute;n</a>
+            <div class="row">
+                <p class="text-center" th:text="'Sesión iniciada como: ' + ${#authentication.name}"></p>
+            </div>
         </div>
     </div>
 </div>
-<script th:replace="~{fragments/inicio :: boostrap-script}"></script>
 </body>
 </html>

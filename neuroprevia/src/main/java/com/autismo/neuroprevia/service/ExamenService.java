@@ -7,9 +7,7 @@ import com.autismo.neuroprevia.repository.examenRepository;
 import com.autismo.neuroprevia.repository.usuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -24,6 +22,7 @@ import java.util.stream.Collectors;
 public class ExamenService {
     private final examenRepository repository;
     private final usuarioRepository usuarioRepository;
+    private final examenRepository repo;
 
     public Examen crearExamen(ExamenDto dto, int creadoPor) {
         log.info("Crear examen: dto={}", dto);
@@ -46,8 +45,11 @@ public class ExamenService {
         return repository.findById(idExamen);
     }
 
-    @Autowired
-    private examenRepository repo;
+    public List<Examen> obtenerPorIdCreadoPor(Usuario usuario) {
+        return repository.findAllByCreadoPor(usuario);
+    }
+
+
     public List<Examen> listar(Integer edad, String tipo) {
         if (edad != null && tipo != null) {
             return repo.findByEdad(edad).stream()

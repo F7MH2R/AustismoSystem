@@ -46,19 +46,22 @@
                       <span th:text="${#authentication.principal.usuario.nombre}">Usuario</span>
                     </span>
                 </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href="@{/logout}">Salir</a>
-                </li>
 
                 <!-- Doctor -->
                 <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
-                    <a class="nav-link" th:href="@{/doctor/home}">Inicio Doctor</a>
+                    <a class="nav-link" th:href="@{/especialista/home}">Inicio Doctor</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
+                    <a class="nav-link" th:href="@{/examenes/crear}">Crear nuevo ex&aacute;men</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
                     <a class="nav-link" th:href="@{/doctor/pacientes}">Pacientes</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
                     <a class="nav-link" th:href="@{/doctor/diagnosticos}">Diagnósticos</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
+                    <a class="nav-link" th:href="@{/examenes/realizados}">Ex&aacute;menes Realizados</a>
                 </li>
 
                 <!-- Admin -->
@@ -78,6 +81,9 @@
                     <a class="nav-link" th:href="@{/admin/reportes}">Reportes</a>
                 </li>
 
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/logout}">Salir</a>
+                </li>
             </ul>
         </div>
     </div>
