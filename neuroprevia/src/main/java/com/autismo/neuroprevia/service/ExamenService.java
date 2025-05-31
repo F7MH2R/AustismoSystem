@@ -49,7 +49,6 @@ public class ExamenService {
         return repository.findAllByCreadoPor(usuario);
     }
 
-
     public List<Examen> listar(Integer edad, String tipo) {
         if (edad != null && tipo != null) {
             return repo.findByEdad(edad).stream()

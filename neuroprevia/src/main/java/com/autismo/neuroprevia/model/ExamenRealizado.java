@@ -27,10 +27,12 @@ public class ExamenRealizado {
 
     private Timestamp fechaRealizacion = Timestamp.from(Instant.now());
     private float resultadoTotal;
+    public float getResultadoTotal() { return resultadoTotal; }
+    public void setResultadoTotal(float resultadoTotal) { this.resultadoTotal = resultadoTotal; }
+
 
     @Column(columnDefinition = "TEXT")
     private String interpretacion;
-
 
     public int getId() {
         return id;
@@ -48,10 +50,6 @@ public class ExamenRealizado {
         return fechaRealizacion;
     }
 
-    public float getResultadoTotal() {
-        return resultadoTotal;
-    }
-
     public String getInterpretacion() {
         return interpretacion;
     }
@@ -59,6 +57,5 @@ public class ExamenRealizado {
     public void setInterpretacion(String interpretacion) {
         this.interpretacion = interpretacion;
     }
-
 
 }

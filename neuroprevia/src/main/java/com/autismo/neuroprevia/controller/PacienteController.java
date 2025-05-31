@@ -2,6 +2,7 @@ package com.autismo.neuroprevia.controller;
 
 import com.autismo.neuroprevia.model.Examen;
 import com.autismo.neuroprevia.model.ExamenRealizado;
+import com.autismo.neuroprevia.model.Pregunta;
 import com.autismo.neuroprevia.model.RespuestaDada;
 import com.autismo.neuroprevia.model.RespuestaPosible;
 import com.autismo.neuroprevia.model.Usuario;
@@ -97,29 +98,49 @@ public class PacienteController {
             @RequestParam MultiValueMap<String,String> params,
             @AuthenticationPrincipal UsuarioPrincipal principal
     ) {
-        // 1) Crea el registro de examen_realizado
+        // 1) Crea el registro de ExamenRealizado (sin puntaje todavía)
         Usuario usuario = principal.getUsuario();
         ExamenRealizado er = new ExamenRealizado();
-        er.setExamen(examenService.obtenerPorId(id).get());
+        er.setExamen(examenService.obtenerPorId(id).orElseThrow());
         er.setUsuario(usuario);
-        this.examenRealizadoRepo.save(er);
+        // Lo guardamos para que tenga ID y podamos enlazar las RespuestaDada
+        er = examenRealizadoRepo.save(er);
 
-        // 2) Recorre todas las preguntas y sus respuestas enviadas
-        preguntaService.obtenerPreguntasPorIdExamen(id).forEach(p -> {
-            String param = params.getFirst("r" + p.getId());
-            if (param != null) {
+        // 2) Inicializa la suma de puntajes
+        float sumaTotal = 0f;
+
+        // 3) Recorre todas las preguntas de este examen
+        List<Pregunta> todasPreguntas = preguntaService.obtenerPreguntasPorIdExamen(id);
+        for (Pregunta p : todasPreguntas) {
+            // Cada parámetro r{preguntaId} contiene el ID de la RespuestaPosible seleccionada
+            String parametro = params.getFirst("r" + p.getId());
+            if (parametro != null) {
+                // 3.a) Guardamos la RespuestaDada
                 RespuestaDada rd = new RespuestaDada();
                 rd.setExamenRealizado(er);
                 rd.setPregunta(p);
-                // obtén la respuesta posible por su id
-                RespuestaPosible op = respuestaPosibleRepo
-                        .findById(Integer.valueOf(param))
-                        .orElseThrow();
-                rd.setRespuesta(op);
-                this.respuestaDadaRepo.save(rd);
-            }
-        });
 
+                RespuestaPosible op = respuestaPosibleRepo
+                        .findById(Integer.valueOf(parametro))
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                "Respuesta posible no encontrada: " + parametro));
+
+                rd.setRespuesta(op);
+                respuestaDadaRepo.save(rd);
+                System.out.println("→ Encontrada RespuestaPosible id=" + op.getId() + ", valorNumerico=" + op.getValorNumerico());
+
+                // 3.b) Sumamos el valor numérico de esta RespuestaPosible
+                sumaTotal += op.getValorNumerico();
+            }
+            System.out.println("Suma total final: " + sumaTotal);
+
+        }
+
+        // 4) Actualizamos el campo resultadoTotal y guardamos de nuevo ExamenRealizado
+        er.setResultadoTotal(sumaTotal);
+        examenRealizadoRepo.save(er);
+
+        // 5) Redirigimos al historial para que se vea el puntaje recién calculado
         return "redirect:/paciente/historial";
     }
 
