@@ -29,6 +29,12 @@ public class Usuario {
 
     private Timestamp creadoEn = Timestamp.from(Instant.now());
 
+    // Para perfil
+    private String telefono;
+    private String direccion;
+    private String alergias;
+
+
 
     public int getId() {
         return id;
@@ -111,9 +117,6 @@ public class Usuario {
     }
 
 
-
-
-
     public boolean isVerificado() {
         return activo;
     }
@@ -121,5 +124,15 @@ public class Usuario {
     public void setVerificado(boolean verificado) {
         this.activo = verificado;
     }
+
+
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
+
+    public String getAlergias() { return alergias; }
+    public void setAlergias(String alergias) { this.alergias = alergias; }
 
 }

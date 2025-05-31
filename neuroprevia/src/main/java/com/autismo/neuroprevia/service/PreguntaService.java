@@ -18,6 +18,11 @@ public class PreguntaService {
     private final preguntaRepository repository;
     private final examenRepository examenRepository;
 
+    public List<Pregunta> listarPorExamen(Integer idExamen) {
+        // delega a tu método de repo que ya existe
+        return repository.findAllByExamenIdOrderByOrdenAsc(idExamen);
+    }
+
     public Pregunta crear(PreguntaDto dto, int idExamen) {
         Pregunta entity = new Pregunta();
         Optional<Examen> examen = examenRepository.findById(idExamen);
@@ -36,7 +41,9 @@ public class PreguntaService {
         return repository.findAllByExamenIdOrderByOrdenAsc(idExamen);
     }
 
-    public Optional<Pregunta> obtenerPorId(int idPregunta) {
+    public Optional<Pregunta> obtenerPorId(int idPregunta)
+    {
         return repository.findById(idPregunta);
     }
+
 }
