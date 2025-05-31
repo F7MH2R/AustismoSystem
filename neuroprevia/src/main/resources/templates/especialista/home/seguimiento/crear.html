@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
     <meta charset="UTF-8">
     <title>Crear Seguimiento</title>
@@ -8,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css" rel="stylesheet"> <!-- Tema bonito -->
 </head>
 <body class="bg-light">
-<div class="container mt-5">
+<div layout:fragment="content" class="container mt-5">
     <div class="card shadow">
         <div class="card-header bg-success text-white">
             <h4 class="mb-0">Agendar Seguimiento</h4>
