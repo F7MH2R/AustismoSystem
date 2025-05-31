@@ -201,7 +201,7 @@ public class EspecialistaController {
 
         seguimientoRepo.save(s);
         redirectAttributes.addFlashAttribute("seguimientoCreado", true);
-        return "redirect:/especialista/home/informes/lista";
+        return "redirect:/especialista/informes";
     }
 
 
