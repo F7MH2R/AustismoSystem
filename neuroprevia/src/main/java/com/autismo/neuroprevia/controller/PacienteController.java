@@ -93,29 +93,46 @@ public class PacienteController {
             @RequestParam MultiValueMap<String,String> params,
             @AuthenticationPrincipal UsuarioPrincipal principal
     ) {
-        // 1) Crea el registro de examen_realizado
+        // 1) Crea el registro de ExamenRealizado (sin puntaje todavía)
         Usuario usuario = principal.getUsuario();
         ExamenRealizado er = new ExamenRealizado();
-        er.setExamen(examenService.obtenerPorId(id).get());
+        er.setExamen(examenService.obtenerPorId(id).orElseThrow());
         er.setUsuario(usuario);
-        this.examenRealizadoRepo.save(er);
+        // Lo guardamos para que tenga ID y podamos enlazar las RespuestaDada
+        er = examenRealizadoRepo.save(er);
 
-        // 2) Recorre todas las preguntas y sus respuestas enviadas
-        preguntaService.obtenerPreguntasPorIdExamen(id).forEach(p -> {
-            String param = params.getFirst("r" + p.getId());
-            if (param != null) {
+        // 2) Inicializa la suma de puntajes
+        float sumaTotal = 0f;
+
+        // 3) Recorre todas las preguntas de este examen
+        List<Pregunta> todasPreguntas = preguntaService.obtenerPreguntasPorIdExamen(id);
+        for (Pregunta p : todasPreguntas) {
+            // Cada parámetro r{preguntaId} contiene el ID de la RespuestaPosible seleccionada
+            String parametro = params.getFirst("r" + p.getId());
+            if (parametro != null) {
+                // 3.a) Guardamos la RespuestaDada
                 RespuestaDada rd = new RespuestaDada();
                 rd.setExamenRealizado(er);
                 rd.setPregunta(p);
-                // obtén la respuesta posible por su id
-                RespuestaPosible op = respuestaPosibleRepo
-                        .findById(Integer.valueOf(param))
-                        .orElseThrow();
-                rd.setRespuesta(op);
-                this.respuestaDadaRepo.save(rd);
-            }
-        });
 
+                RespuestaPosible op = respuestaPosibleRepo
+                        .findById(Integer.valueOf(parametro))
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                "Respuesta posible no encontrada: " + parametro));
+
+                rd.setRespuesta(op);
+                respuestaDadaRepo.save(rd);
+
+                // 3.b) Sumamos el valor numérico de esta RespuestaPosible
+                sumaTotal += op.getValorNumerico();
+            }
+        }
+
+        // 4) Actualizamos el campo resultadoTotal y guardamos de nuevo ExamenRealizado
+        er.setResultadoTotal(sumaTotal);
+        examenRealizadoRepo.save(er);
+
+        // 5) Redirigimos al historial para que se vea el puntaje recién calculado
         return "redirect:/paciente/historial";
     }
 
@@ -153,17 +170,7 @@ public class PacienteController {
         return "paciente/examenes";
     }
 
-    @GetMapping("/historial")
-    public String historial(Model model,
-                            @AuthenticationPrincipal UsuarioPrincipal principal) {
-        int uid = principal.getUsuario().getId();
-        List<ExamenRealizado> hechos = examenRealizadoRepo
-                .findAllByUsuarioIdOrderByFechaRealizacionDesc(uid);
-        model.addAttribute("historial", hechos);
-        return "paciente/historial";
-    }
-
-    @GetMapping("/resultado/{rid}")
+     @GetMapping("/resultado/{rid}")
     public String resultado(@PathVariable Long rid, Model model) {
         model.addAttribute("resultadoId", rid);
         return "paciente/resultado";
@@ -226,5 +233,15 @@ public class PacienteController {
         usuarioService.guardar(paciente);
 
         return "redirect:/paciente/perfil?success";
+    }
+
+    @GetMapping("/historial")
+    public String historial(Model model,
+                            @AuthenticationPrincipal UsuarioPrincipal principal) {
+        int uid = principal.getUsuario().getId();
+        List<ExamenRealizado> hechos = examenRealizadoRepo
+                .findAllByUsuarioIdOrderByFechaRealizacionDesc(uid);
+        model.addAttribute("historial", hechos);
+        return "paciente/historial";
     }
 }

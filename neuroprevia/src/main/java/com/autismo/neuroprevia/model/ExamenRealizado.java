@@ -11,7 +11,9 @@ import java.time.Instant;
 @Getter
 @Setter
 @Table(name = "examenes_realizados")
+
 public class ExamenRealizado {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,12 @@ public class ExamenRealizado {
 
     private Timestamp fechaRealizacion = Timestamp.from(Instant.now());
     private float resultadoTotal;
+    public float getResultadoTotal() { return resultadoTotal; }
+    public void setResultadoTotal(float resultadoTotal) { this.resultadoTotal = resultadoTotal; }
+
 
     @Column(columnDefinition = "TEXT")
     private String interpretacion;
+
+
 }
