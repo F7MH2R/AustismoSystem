@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalles del test</title>
+    <link rel="stylesheet" th:href="@{/css/nav.css}" />
     <link th:replace="~{fragments/inicio :: bootstrap-css}">
 </head>
 <body>
+<div th:replace="fragments/nav :: nav"></div>
 <div class="container mt-2">
     <div class="row">
         <div class="col">
@@ -119,6 +121,7 @@
         </div>
     </div>
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 <script th:replace="~{fragments/inicio :: boostrap-script}"></script>
 </body>
 </html>

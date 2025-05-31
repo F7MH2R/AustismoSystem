@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface preguntaRepository extends JpaRepository<Pregunta, Integer> {
+    int countByExamenId(Integer examenId);
     List<Pregunta> findAllByExamenIdOrderByOrdenAsc(Integer idExamen);
 }

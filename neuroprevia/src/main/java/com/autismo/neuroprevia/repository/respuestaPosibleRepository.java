@@ -12,4 +12,6 @@ public interface respuestaPosibleRepository extends JpaRepository<RespuestaPosib
     List<RespuestaPosible> findAllByPregunta(Pregunta pregunta);
     List<RespuestaPosible> findByPregunta(Pregunta pregunta);
 
+    List<RespuestaPosible> findByPreguntaId(Integer preguntaId);
+
 }

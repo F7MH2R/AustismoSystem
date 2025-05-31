@@ -1,8 +1,12 @@
 package com.autismo.neuroprevia.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "respuestas_dadas")
 public class RespuestaDada {
 

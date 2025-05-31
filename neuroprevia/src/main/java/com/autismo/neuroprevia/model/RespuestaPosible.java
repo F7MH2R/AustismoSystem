@@ -14,6 +14,8 @@ public class RespuestaPosible {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String texto;
+
     @ManyToOne
     @JoinColumn(name = "id_pregunta", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_respuesta_pregunta"))
     private Pregunta pregunta;

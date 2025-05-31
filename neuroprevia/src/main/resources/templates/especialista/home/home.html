@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/main}">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio Paciente</title>
+    <title>Inicio Especialista</title>
 </head>
 <body>
-
-<h1>Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!</h1>
-<h1>Rol:, <span th:text="${usuario.rol}">Usuario</span>!</h1>
-
+<div layout:fragment="content">
+    <h1>Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!</h1>
+    <h1>Rol: <span th:text="${usuario.rol}">Usuario</span>!</h1>
+</div>
 </body>
 </html>
