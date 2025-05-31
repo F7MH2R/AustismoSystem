@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del ex&aacute;men</title>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col col-auto">
+            <h2 >Titulo del examen:</h2>
+        </div>
+        <div class="col col-auto">
+            <h2 th:text="${examen.titulo}"></h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col col-auto">
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <td>Pregunta</td>
+                        <td>Respuesta</td>
+                        <td>Puntuacion</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="respuesta : ${respuestas}">
+                        <td th:text="${respuesta.pregunta.texto}"></td>
+                        <td th:text="${respuesta.respuesta.textoRespuesta}"></td>
+                        <td th:text="${respuesta.respuesta.valorNumerico}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
