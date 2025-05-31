@@ -8,6 +8,7 @@
 <body>
 <div class="container mt-2 col-lg-8">
     <h2>Exámenes Disponibles</h2>
+
     <form th:action="@{/paciente/examenes}" method="get">
         <label>Edad:
             <select name="grupoEdad">
@@ -23,9 +24,14 @@
                 <option value="específica">Específica</option>
             </select>
         </label>
-        <button type="submit">Filtrar</button>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
-    <table>
+
+    <!-- ------------------------------------------------
+         Aquí hemos agregado class="examenes-table"
+         para luego estilizarla en el CSS
+         ------------------------------------------------ -->
+    <table class="examenes-table">
         <thead>
         <tr>
             <th>Título</th>
@@ -47,7 +53,6 @@
             </td>
             <td th:text="${e.numeroPreguntas}">0</td>
             <td th:text="${e.duracion}">0</td>
-            <!-- aquí añadimos la columna de acciones -->
             <td>
                 <a th:href="@{|/paciente/examen/${e.id}|}"
                    class="btn btn-primary">

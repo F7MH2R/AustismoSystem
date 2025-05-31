@@ -156,3 +156,210 @@ form {
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--card-shadow);
 }
+
+
+/* ---------------------------
+   Estilos para la tabla del historial
+   --------------------------- */
+
+/* Contenedor de la tabla (opcional) */
+.historial-container {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+/* La propia tabla: ocupa 100% de ancho y colapsa bordes */
+.historial-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-background);
+    box-shadow: 0 2px 4px var(--card-shadow);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Estilo para encabezado */
+.historial-table thead {
+    background-color: var(--primary-color);
+}
+
+.historial-table th {
+    color: #ecf0f1;
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Filas del body */
+.historial-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.historial-table td {
+    padding: 12px 16px;
+    color: var(--text-color);
+    font-size: 20px;
+    /* (ajusta si quieres fuente más pequeña) */
+}
+
+/* Hover sobre cada fila */
+.historial-table tbody tr:hover {
+    background-color: var(--background-color);
+}
+
+/* Última fila: quitamos border-bottom para que luzca redondeado */
+.historial-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Columna de acciones: espaciado entre botones */
+.historial-table td .accion-btn {
+    margin-right: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.historial-table td .accion-btn.ver {
+    color: var(--secondary-color);
+}
+
+.historial-table td .accion-btn.pdf {
+    color: var(--primary-color);
+}
+
+.historial-table td .accion-btn:hover {
+    text-decoration: underline;
+}
+
+
+/* ---------------------------
+   Estilos para la tabla de Examen
+   --------------------------- */
+
+.examen-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-background);
+    box-shadow: 0 2px 4px var(--card-shadow);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+/* Encabezado de la tabla de examen */
+.examen-table thead {
+    background-color: var(--primary-color);
+}
+
+.examen-table th {
+    color: #ecf0f1;
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+/* Filas del cuerpo de la tabla */
+.examen-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.examen-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.examen-table td {
+    padding: 12px 16px;
+    color: var(--text-color);
+    font-size: 16px; /* ajusta al tamaño deseado */
+    vertical-align: top;
+}
+
+/* Hover en cada fila */
+.examen-table tbody tr:hover {
+    background-color: var(--background-color);
+}
+
+/* Opciones de respuesta dentro de la celda:
+   las presentamos en bloque con algo de espacio vertical */
+.examen-table .opciones-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* Si quieres que el input y el texto estén alineados:
+   ajusta márgenes/paddings según convenga */
+.examen-table .opciones-container input[type="radio"] {
+    margin-right: 8px;
+}
+
+/* Botón “Enviar Examen” centrado bajo la tabla */
+.examen-submit-container {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.examen-table .pregunta-texto {
+    font-weight: 600;
+}
+
+
+
+/* -------------------------------
+   Estilos para la tabla “Exámenes Disponibles”
+   (clase .examenes-table)
+   ------------------------------- */
+
+.examenes-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-background);
+    box-shadow: 0 2px 4px var(--card-shadow);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.examenes-table thead {
+    background-color: var(--primary-color);
+}
+
+.examenes-table th {
+    color: #ecf0f1;
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.examenes-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.examenes-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.examenes-table td {
+    padding: 12px 16px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+.examenes-table tbody tr:hover {
+    background-color: var(--background-color);
+}
+
+/* Si quieres que el botón “Realizar examen” tenga algo de margen */
+.examenes-table td .btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}

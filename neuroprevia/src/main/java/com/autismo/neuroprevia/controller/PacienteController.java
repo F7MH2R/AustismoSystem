@@ -122,10 +122,13 @@ public class PacienteController {
 
                 rd.setRespuesta(op);
                 respuestaDadaRepo.save(rd);
+                System.out.println("→ Encontrada RespuestaPosible id=" + op.getId() + ", valorNumerico=" + op.getValorNumerico());
 
                 // 3.b) Sumamos el valor numérico de esta RespuestaPosible
                 sumaTotal += op.getValorNumerico();
             }
+            System.out.println("Suma total final: " + sumaTotal);
+
         }
 
         // 4) Actualizamos el campo resultadoTotal y guardamos de nuevo ExamenRealizado
