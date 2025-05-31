@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
     <meta charset="UTF-8">
     <title>Crear examen</title>
-    <link rel="stylesheet" th:href="@{/css/nav.css}" />
-    <link th:replace="~{fragments/inicio :: bootstrap-css}">
 </head>
 <body>
-<div th:replace="fragments/nav :: nav"></div>
-<div class="container mt-3 col-lg-8">
+<div layout:fragment="content" class="container mt-3 col-lg-8">
     <div class="row">
         <h1 class="text-center">Crear nuevo test</h1>
     </div>
@@ -49,7 +47,5 @@
         </form>
     </div>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
-<script th:replace="~{fragments/inicio :: boostrap-script}" ></script>
 </body>
 </html>
