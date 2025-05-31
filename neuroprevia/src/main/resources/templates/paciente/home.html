@@ -3,11 +3,23 @@
       th:replace="fragments/layout :: layout(~{::title}, ~{::body})">
 <head>
     <title>Inicio Paciente</title>
+    <link rel="stylesheet" th:href="@{/css/paciente.css}" />
 </head>
-<body>
-<div class="container mt-2 col-lg-8">
-    <h1>Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!</h1>
-    <h2>Rol: <span th:text="${usuario.rol}">Usuario</span>!</h2>
+<body class="bg-light">
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center px-3">
+
+        <h1 class="home-title mb-3">
+            Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!
+        </h1>
+
+        <h2 class="home-subtitle mb-4">
+        <span class="badge role-badge">
+          Rol: <span th:text="${usuario.rol}">Usuario</span>
+        </span>
+        </h2>
+    </div>
 </div>
+
 </body>
 </html>

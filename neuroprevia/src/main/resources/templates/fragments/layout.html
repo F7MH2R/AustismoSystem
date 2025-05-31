@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:fragment="layout (title, content)">
-<head>
-    <meta charset="UTF-8"/>
-    <title th:replace="${title}">Neuroprevia Paciente</title>
-    <link rel="stylesheet" th:href="@{/css/paciente.css}" />
-    <link rel="stylesheet" th:href="@{/css/nav.css}" />
+    <head>
+        <meta charset="UTF-8"/>
+        <title th:replace="${title}">Neuroprevia Paciente</title>
+        <link rel="stylesheet" th:href="@{/css/paciente.css}" />
+        <link rel="stylesheet" th:href="@{/css/nav.css}" />
+        <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    </head>
+    <body class="d-flex flex-column min-vh-100">
 
-</head>
-<body>
+        <!-- Navegación -->
+        <div th:replace="fragments/nav :: nav"></div>
 
-<!-- Navegación -->
-<div th:replace="fragments/nav :: nav"></div>
+        <!-- Contenido principal -->
+        <div th:replace="${content}"></div>
 
-<!-- Contenido principal -->
-<div th:replace="${content}"></div>
-
-<!-- Pie de página -->
-<div th:replace="fragments/footer :: footer"></div>
-
-</body>
+        <!-- Pie de página -->
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
 </html>
