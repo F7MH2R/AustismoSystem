@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
   <meta charset="UTF-8">
   <title>Gestión de Usuarios</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f5f6fa;
-      padding: 40px;
-    }
 
     h2 {
       text-align: center;
@@ -106,43 +103,38 @@
   </style>
 </head>
 <body>
-
-<h2>Gestión de Usuarios</h2>
-
-<div class="top-actions">
-  <a th:href="@{/admin/usuarios/crear}">+ Crear nuevo usuario</a>
+<div class="container" layout:fragment="content">
+  <h2>Gestión de Usuarios</h2>
+  <div class="top-actions">
+    <a th:href="@{/admin/usuarios/crear}">+ Crear nuevo usuario</a>
+  </div>
+  <table>
+    <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Correo</th>
+      <th>Rol</th>
+      <th>Activo</th>
+      <th>Verificado</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${usuarios}">
+      <td th:text="${u.nombre + ' ' + u.apellido}"></td>
+      <td th:text="${u.correo}"></td>
+      <td th:text="${u.rol}"></td>
+      <td th:text="${u.activo} ? 'Sí' : 'No'"></td>
+      <td th:text="${u.rol == 'DOCTOR' ? (u.verificado ? 'Sí' : 'Pendiente') : '-'}"></td>
+      <td>
+        <a th:href="@{'/admin/usuarios/editar/' + ${u.id}}" class="edit-link">Editar</a>
+        <form th:action="@{'/admin/usuarios/cambiar-estado/' + ${u.id}}" method="post">
+          <button type="submit">Activar/Desactivar</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
-
-<table>
-  <thead>
-  <tr>
-    <th>Nombre</th>
-    <th>Correo</th>
-    <th>Rol</th>
-    <th>Activo</th>
-    <th>Verificado</th>
-    <th>Acciones</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="u : ${usuarios}">
-    <td th:text="${u.nombre + ' ' + u.apellido}"></td>
-    <td th:text="${u.correo}"></td>
-    <td th:text="${u.rol}"></td>
-    <td th:text="${u.activo} ? 'Sí' : 'No'"></td>
-    <td th:text="${u.rol == 'DOCTOR' ? (u.verificado ? 'Sí' : 'Pendiente') : '-'}"></td>
-    <td>
-      <a th:href="@{'/admin/usuarios/editar/' + ${u.id}}" class="edit-link">Editar</a>
-      <form th:action="@{'/admin/usuarios/cambiar-estado/' + ${u.id}}" method="post">
-        <button type="submit">Activar/Desactivar</button>
-      </form>
-      <form th:action="@{'/admin/usuarios/eliminar/' + ${u.id}}" method="post">
-        <button type="submit" class="delete-button">Eliminar</button>
-      </form>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
 </body>
 </html>

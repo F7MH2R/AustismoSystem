@@ -1,18 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
     <meta charset="UTF-8">
     <title>Inicio Administrador</title>
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f6f8;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
         h1 {
             color: #333;
             margin-bottom: 10px;
@@ -47,14 +40,16 @@
     </style>
 </head>
 <body>
-
-<h1>Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!</h1>
-
-
-<div class="btn-container">
-    <a class="admin-btn" th:href="@{/admin/usuarios}">👤 Gestión de Usuarios</a>
-    <a class="admin-btn" th:href="@{/admin/estadisticas}">📊 Ver Estadísticas</a>
+<div layout:fragment="content" class="container">
+    <div class="row justify-content-center">
+        <div class="col col-auto">
+            <h1>Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!</h1>
+        </div>
+    </div>
+    <div class="btn-container">
+        <a class="admin-btn" th:href="@{/admin/usuarios}">👤 Gestión de Usuarios</a>
+        <a class="admin-btn" th:href="@{/admin/estadisticas}">📊 Ver Estadísticas</a>
+    </div>
 </div>
-
 </body>
 </html>
