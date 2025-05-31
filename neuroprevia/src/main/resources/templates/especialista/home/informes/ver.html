@@ -41,6 +41,7 @@
             <!-- Botones -->
             <div class="mt-4 d-flex gap-2">
                 <a th:href="@{/especialista/informes}" class="btn btn-secondary">⬅️ Volver a la lista</a>
+                <a th:href="@{'/especialista/seguimiento/crear/' + ${informe.id}}" class="btn btn-success">📅 Dar seguimiento</a>
                 <a th:href="@{'/informes/' + ${informe.id} + '/generar-pdf'}" class="btn btn-danger" target="_blank">🧾 Descargar PDF</a>
             </div>
 
