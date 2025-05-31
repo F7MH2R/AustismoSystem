@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Controller
@@ -25,8 +26,10 @@ public class EstadisticasController {
         long totalExamenes = examenRealizadoRepository.count();
 
         // Total de pacientes nuevos esta semana
-        LocalDate hace7dias = LocalDate.now().minusDays(7);
-        long nuevosPacientes = usuarioRepository.countByRolAndFechaNacimientoAfter("PACIENTE", hace7dias);
+
+        Timestamp hace7dias = Timestamp.valueOf(LocalDate.now().minusDays(7).atStartOfDay());
+        long nuevosPacientes = usuarioRepository.countByRolAndCreadoEnAfter("PACIENTE", hace7dias);
+
 
         // Total de doctores
         long totalDoctores = usuarioRepository.countByRol("DOCTOR");
