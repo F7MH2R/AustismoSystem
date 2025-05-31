@@ -86,12 +86,12 @@ public class EspecialistaController {
         Usuario doctor = principal.getUsuario();
         if (doctor == null || !doctor.getRol().equals("DOCTOR")) return "redirect:/login";
 
-        // ✅ 1. Actualizar interpretación
+        //  1. Actualizar interpretación
         ExamenRealizado er = examenRealizadoRepo.findById(id.intValue()).orElseThrow();
         er.setInterpretacion(interpretacion);
         examenRealizadoRepo.save(er);
 
-        // ✅ 2. Actualizar respuestas dadas
+        // 2. Actualizar respuestas dadas
         List<RespuestaDada> dadas = respuestaDadaRepo.findByExamenRealizado_Id(id.intValue());
 
         for (int i = 0; i < dadas.size(); i++) {
