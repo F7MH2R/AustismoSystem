@@ -1,12 +1,18 @@
 package com.autismo.neuroprevia.controller;
 
-import com.autismo.neuroprevia.repository.examenRealizadoRepository;
-import com.autismo.neuroprevia.repository.respuestaPosibleRepository;
-import com.autismo.neuroprevia.repository.respuestaDadaRepository;
-
-import com.autismo.neuroprevia.model.*;
+import com.autismo.neuroprevia.model.Examen;
+import com.autismo.neuroprevia.model.ExamenRealizado;
+import com.autismo.neuroprevia.model.RespuestaDada;
+import com.autismo.neuroprevia.model.RespuestaPosible;
+import com.autismo.neuroprevia.model.Usuario;
+import com.autismo.neuroprevia.model.UsuarioPrincipal;
+import com.autismo.neuroprevia.model.dto.ExamenVista;
 import com.autismo.neuroprevia.model.dto.PreguntaDto;
 import com.autismo.neuroprevia.model.enumeration.TipoRespuesta;
+import com.autismo.neuroprevia.repository.examenRealizadoRepository;
+import com.autismo.neuroprevia.repository.preguntaRepository;
+import com.autismo.neuroprevia.repository.respuestaDadaRepository;
+import com.autismo.neuroprevia.repository.respuestaPosibleRepository;
 import com.autismo.neuroprevia.service.ExamenService;
 import com.autismo.neuroprevia.service.PreguntaService;
 import com.autismo.neuroprevia.service.UsuarioService;
@@ -15,27 +21,25 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-import java.util.Map;
-import com.autismo.neuroprevia.service.UsuarioService;
-import com.autismo.neuroprevia.repository.examenRepository;
-import com.autismo.neuroprevia.repository.preguntaRepository;
-import com.autismo.neuroprevia.model.dto.ExamenVista;
 
 @Controller
 @RequestMapping("/paciente")
@@ -74,7 +78,7 @@ public class PacienteController {
                 .map(p -> PreguntaDto.builder()
                         .id(p.getId())
                         .texto(p.getTexto())
-                        .tipoRespuesta(TipoRespuesta.valueOf(p.getTipoRespuesta()))
+                        .tipoRespuesta(TipoRespuesta.fromValue(p.getTipoRespuesta()))
                         .orden(p.getOrden())
                         .respuestaPosibles(p.getRespuestaPosibles())
                         .build()
@@ -173,7 +177,17 @@ public class PacienteController {
         return "paciente/examenes";
     }
 
-     @GetMapping("/resultado/{rid}")
+    @GetMapping("/historial")
+    public String historial(Model model,
+                            @AuthenticationPrincipal UsuarioPrincipal principal) {
+        int uid = principal.getUsuario().getId();
+        List<ExamenRealizado> hechos = examenRealizadoRepo
+                .findAllByUsuarioIdOrderByFechaRealizacionDesc(uid);
+        model.addAttribute("historial", hechos);
+        return "paciente/historial";
+    }
+
+    @GetMapping("/resultado/{rid}")
     public String resultado(@PathVariable Long rid, Model model) {
         model.addAttribute("resultadoId", rid);
         return "paciente/resultado";
@@ -236,15 +250,5 @@ public class PacienteController {
         usuarioService.guardar(paciente);
 
         return "redirect:/paciente/perfil?success";
-    }
-
-    @GetMapping("/historial")
-    public String historial(Model model,
-                            @AuthenticationPrincipal UsuarioPrincipal principal) {
-        int uid = principal.getUsuario().getId();
-        List<ExamenRealizado> hechos = examenRealizadoRepo
-                .findAllByUsuarioIdOrderByFechaRealizacionDesc(uid);
-        model.addAttribute("historial", hechos);
-        return "paciente/historial";
     }
 }

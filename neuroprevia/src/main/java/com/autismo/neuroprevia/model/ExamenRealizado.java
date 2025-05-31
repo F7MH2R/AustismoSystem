@@ -11,9 +11,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Table(name = "examenes_realizados")
-
 public class ExamenRealizado {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +34,28 @@ public class ExamenRealizado {
     @Column(columnDefinition = "TEXT")
     private String interpretacion;
 
+    public int getId() {
+        return id;
+    }
+
+    public Examen getExamen() {
+        return examen;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public Timestamp getFechaRealizacion() {
+        return fechaRealizacion;
+    }
+
+    public String getInterpretacion() {
+        return interpretacion;
+    }
+
+    public void setInterpretacion(String interpretacion) {
+        this.interpretacion = interpretacion;
+    }
 
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Informe Clínico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div layout:fragment="content" class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">Informe Clínico de [[${informe.nombrePaciente}]]</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Examen:</strong> <span th:text="${informe.examenTitulo}">Nombre Examen</span></p>
+            <p><strong>Fecha de realización:</strong> <span th:text="${#temporals.format(informe.fechaRealizacion, 'dd/MM/yyyy')}">01/01/2025</span></p>
+            <p><strong>Resultado total:</strong> <span th:text="${informe.resultadoTotal}">0.0</span></p>
+            <p><strong>Interpretación:</strong> <span th:text="${informe.interpretacion}">Texto interpretativo</span></p>
+
+            <hr>
+            <h5>Detalle de Respuestas</h5>
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Pregunta</th>
+                    <th>Respuesta dada</th>
+                    <th>Valor numérico</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="detalle, iterStat : ${respuestas}">
+                    <td th:text="${iterStat.index + 1}">1</td>
+                    <td th:text="${detalle.pregunta.texto}">Texto de la pregunta</td>
+                    <td th:text="${detalle.respuesta.textoRespuesta}">Texto de la respuesta</td>
+                    <td th:text="${detalle.respuesta.valorNumerico}">0</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Botones -->
+            <div class="mt-4 d-flex gap-2">
+                <a th:href="@{/especialista/informes}" class="btn btn-secondary">⬅️ Volver a la lista</a>
+                <a th:href="@{'/especialista/seguimiento/crear/' + ${informe.id}}" class="btn btn-success">📅 Dar seguimiento</a>
+                <a th:href="@{'/informes/' + ${informe.id} + '/generar-pdf'}" class="btn btn-danger" target="_blank">🧾 Descargar PDF</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+

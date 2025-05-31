@@ -1,6 +1,7 @@
 package com.autismo.neuroprevia.repository;
 
 import com.autismo.neuroprevia.model.Examen;
+import com.autismo.neuroprevia.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,5 @@ public interface examenRepository extends JpaRepository<Examen, Integer> {
 
     // Filtrar por tipo de evaluación
     List<Examen> findByTipo(String tipo);
+    List<Examen> findAllByCreadoPor(Usuario creadoPor);
 }
