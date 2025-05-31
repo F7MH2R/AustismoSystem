@@ -2,6 +2,7 @@ package com.autismo.neuroprevia.controller;
 
 import com.autismo.neuroprevia.model.Examen;
 import com.autismo.neuroprevia.model.ExamenRealizado;
+import com.autismo.neuroprevia.model.Pregunta;
 import com.autismo.neuroprevia.model.RespuestaDada;
 import com.autismo.neuroprevia.model.RespuestaPosible;
 import com.autismo.neuroprevia.model.Usuario;
