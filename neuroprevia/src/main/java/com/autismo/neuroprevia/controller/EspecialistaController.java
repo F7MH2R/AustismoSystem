@@ -215,6 +215,6 @@ public class EspecialistaController {
             seguimientoRepo.save(s);
             redirectAttributes.addFlashAttribute("guardado", true);
         }
-        return "redirect:/especialista/home/informes/lista";
+        return "redirect:/especialista/informes";
     }
 }
