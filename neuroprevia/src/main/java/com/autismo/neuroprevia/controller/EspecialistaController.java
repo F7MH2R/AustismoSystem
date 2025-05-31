@@ -3,13 +3,12 @@ package com.autismo.neuroprevia.controller;
 import com.autismo.neuroprevia.model.*;
 import com.autismo.neuroprevia.model.dto.InformeDto;
 import com.autismo.neuroprevia.model.dto.RespuestaDetalleDto;
-import com.autismo.neuroprevia.repository.examenRealizadoRepository;
-import com.autismo.neuroprevia.repository.respuestaDadaRepository;
-import com.autismo.neuroprevia.repository.respuestaPosibleRepository;
+import com.autismo.neuroprevia.repository.*;
 import com.autismo.neuroprevia.service.DoctorService;
 import com.autismo.neuroprevia.service.PdfService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class EspecialistaController {
@@ -36,6 +38,11 @@ public class EspecialistaController {
     @Autowired
     private respuestaPosibleRepository respuestaPosibleRepo;
 
+    @Autowired
+    private seguimientoRepository seguimientoRepo;
+
+    @Autowired
+    private usuarioRepository usuarioRepo;
 
     // PUNTO 4 – Informes Clínicos
     @GetMapping("/especialista/informes")
@@ -44,10 +51,13 @@ public class EspecialistaController {
         if (doctor == null || !doctor.getRol().equals("DOCTOR")) return "redirect:/login";
 
         List<InformeDto> informes = doctorService.obtenerInformesRealizados();
-        model.addAttribute("informes", informes);
+        List<Seguimiento> seguimientos = doctorService.obtenerSeguimientosDelDoctor(doctor.getId());
+
+        model.addAttribute("informes", informes != null ? informes : new ArrayList<>());
+        model.addAttribute("seguimientos", seguimientos != null ? seguimientos : new ArrayList<>());
         return "especialista/home/informes/lista";
-        // Vista HTML
     }
+
 
     // PUNTO 4 - Ver Informes completos
     @GetMapping("/especialista/informes/{id}")
@@ -140,18 +150,71 @@ public class EspecialistaController {
     }
 
 
-
-
-
-
-    // PUNTO 5 – Agenda de Seguimiento
-    @GetMapping("/especialista/seguimientos")
-    public String verSeguimientos(Model model, HttpSession session) {
-        Usuario doctor = (Usuario) session.getAttribute("usuarioLogueado");
+    // Crear seguimiento
+    @GetMapping("/especialista/seguimiento/crear/{idExamen}")
+    public String mostrarFormularioSeguimiento(@PathVariable("idExamen") Long idExamen,
+                                               Model model,
+                                               @AuthenticationPrincipal UsuarioPrincipal principal,
+                                               RedirectAttributes redirectAttributes) {
+        Usuario doctor = principal.getUsuario();
         if (doctor == null || !doctor.getRol().equals("DOCTOR")) return "redirect:/login";
 
-        List<Seguimiento> seguimientos = doctorService.obtenerSeguimientosDelDoctor(doctor.getId());
-        model.addAttribute("seguimientos", seguimientos);
-        return "especialista/seguimientos/lista"; // Vista HTML
+        ExamenRealizado examen = examenRealizadoRepo.findById(idExamen.intValue()).orElseThrow();
+        Usuario paciente = examen.getUsuario();
+
+        if (doctorService.tieneSeguimientoPendiente(doctor.getId(), paciente.getId())) {
+            redirectAttributes.addFlashAttribute("error", "Ya existe un seguimiento pendiente para este paciente.");
+            return "redirect:/especialista/informes";
+        }
+
+        model.addAttribute("paciente", paciente);
+        model.addAttribute("doctor", doctor);
+        return "especialista/home/seguimiento/crear";
+    }
+
+    // Guardar seguimiento
+    @PostMapping("/especialista/seguimiento/guardar")
+    public String guardarSeguimiento(@RequestParam("idDoctor") int idDoctor,
+                                     @RequestParam("idPaciente") int idPaciente,
+                                     @RequestParam("fechaCita") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaCita,
+                                     @RequestParam("notas") String notas,
+                                     RedirectAttributes redirectAttributes) {
+
+        if (fechaCita == null || fechaCita.isBefore(LocalDate.now())) {
+            redirectAttributes.addFlashAttribute("error", "La fecha debe ser válida y posterior a hoy.");
+            return "redirect:/especialista/informes";
+        }
+
+        if (seguimientoRepo.existsByIdDoctorAndFechaCita(idDoctor, fechaCita)) {
+            redirectAttributes.addFlashAttribute("error", "Ya existe otra cita agendada en esa fecha para este doctor.");
+            return "redirect:/especialista/informes";
+        }
+
+        Usuario paciente = usuarioRepo.findById(idPaciente).orElseThrow(); // 👈 obtener paciente
+
+        Seguimiento s = new Seguimiento();
+        s.setIdDoctor(idDoctor);
+        s.setPaciente(paciente); // 👈 asignar objeto Usuario
+        s.setFechaCita(fechaCita);
+        s.setNotas(notas);
+        s.setEstado("Pendiente");
+
+        seguimientoRepo.save(s);
+        redirectAttributes.addFlashAttribute("seguimientoCreado", true);
+        return "redirect:/especialista/home/informes/lista";
+    }
+
+
+    // Actualizar estado de seguimiento
+    @PostMapping("/especialista/seguimiento/{id}/actualizar-estado")
+    public String actualizarEstado(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+        Optional<Seguimiento> optional = seguimientoRepo.findById(id);
+        if (optional.isPresent()) {
+            Seguimiento s = optional.get();
+            s.setEstado("Realizado");
+            seguimientoRepo.save(s);
+            redirectAttributes.addFlashAttribute("guardado", true);
+        }
+        return "redirect:/especialista/home/informes/lista";
     }
 }

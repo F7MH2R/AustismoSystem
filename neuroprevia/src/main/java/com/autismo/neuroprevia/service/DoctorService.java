@@ -7,6 +7,8 @@ import com.autismo.neuroprevia.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,6 +34,10 @@ public class DoctorService {
 
     @Autowired
     private respuestaPosibleRepository respuestaPosibleRepo;
+
+    @Autowired
+    private usuarioRepository usuarioRepo;
+
 
 
     public List<InformeDto> obtenerInformesRealizados() {
@@ -104,6 +110,16 @@ public class DoctorService {
             dto.setRespuestas(respuestaPosibleRepo.findByPregunta(p)); // ✅ aquí asignás las opciones
             return dto;
         }).toList();
+    }
+
+    public boolean tieneSeguimientoPendiente(int idDoctor, int idPaciente) {
+        Usuario paciente = usuarioRepo.findById(idPaciente).orElseThrow(); // asegúrate de tener usuarioRepo inyectado
+        return seguimientoRepo.existsByIdDoctorAndPacienteAndEstado(idDoctor, paciente, "Pendiente");
+    }
+
+
+    public boolean existeCitaEnFecha(int idDoctor, LocalDate fecha) {
+        return seguimientoRepo.existsByIdDoctorAndFechaCita(idDoctor, fecha);
     }
 
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Seguimiento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Agendar Seguimiento</h4>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/especialista/seguimiento/guardar}" method="post">
+                <input type="hidden" name="idDoctor" th:value="${doctor.id}" />
+                <input type="hidden" name="idPaciente" th:value="${paciente.id}" />
+
+                <div class="mb-3">
+                    <label class="form-label">Paciente:</label>
+                    <input type="text" class="form-control" th:value="${paciente.nombre + ' ' + paciente.apellido}" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Fecha de la Cita:</label>
+                    <input type="date" class="form-control" name="fechaCita" min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Notas / Observaciones:</label>
+                    <textarea class="form-control" name="notas" rows="4" placeholder="Observaciones importantes..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">Guardar Seguimiento</button>
+                <a th:href="@{/especialista/informes}" class="btn btn-secondary ms-2">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
