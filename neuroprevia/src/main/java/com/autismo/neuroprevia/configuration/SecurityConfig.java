@@ -32,7 +32,7 @@ public class SecurityConfig {
                             "/", "/login", "/logout",
                             "/images/**", "/css/**", "/js/**",
                             "/registrarse/**", "/registrarPaciente/**"
-                            , "/especialista/**"
+                            , "/especialista/**", "/actuator/**"
                     ).permitAll(); // Si hay alguna ruta que este dando problemas, pueden agregarla aca, para probar
                     auth.requestMatchers("/admin/home","/examenes/**", "/preguntas/**", "/respuesta/**").hasAnyRole(ADMIN, DOCTOR);
                             auth.anyRequest().authenticated();
