@@ -4,6 +4,7 @@ import com.autismo.neuroprevia.model.*;
 import com.autismo.neuroprevia.model.dto.InformeDto;
 import com.autismo.neuroprevia.model.dto.RespuestaDetalleDto;
 import com.autismo.neuroprevia.repository.*;
+import com.autismo.neuroprevia.service.CorreoService;
 import com.autismo.neuroprevia.service.DoctorService;
 import com.autismo.neuroprevia.service.PdfService;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +27,9 @@ import java.util.Optional;
 
 @Controller
 public class EspecialistaController {
+
+    @Autowired
+    private CorreoService correoService;
 
     @Autowired
     private DoctorService doctorService;
@@ -191,6 +195,7 @@ public class EspecialistaController {
         }
 
         Usuario paciente = usuarioRepo.findById(idPaciente).orElseThrow(); // 👈 obtener paciente
+        Usuario doctor = usuarioRepo.findById(idDoctor).orElseThrow();     // 👈 obtener doctor también
 
         Seguimiento s = new Seguimiento();
         s.setIdDoctor(idDoctor);
@@ -200,6 +205,16 @@ public class EspecialistaController {
         s.setEstado("Pendiente");
 
         seguimientoRepo.save(s);
+        // 🔔 Enviar correo de confirmación
+        if (paciente.getCorreo() != null) {
+            correoService.enviarCorreoSeguimiento(
+                    paciente.getCorreo(),
+                    paciente.getNombre(),
+                    doctor.getNombre(),
+                    fechaCita,
+                    notas
+            );
+        }
         redirectAttributes.addFlashAttribute("seguimientoCreado", true);
         return "redirect:/especialista/informes";
     }
