@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
     <meta charset="UTF-8">
     <title>Estadísticas del Sistema</title>
@@ -7,7 +8,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 30px;
         }
 
         h2 {
@@ -28,6 +28,8 @@
             border-radius: 8px;
             box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
             background: #f9f9f9;
+            margin-left: 20px;
+            margin-right: 20px;
         }
 
         .charts-container {
@@ -47,11 +49,11 @@
         }
     </style>
 </head>
-<body>
+<body layout:fragment="content">
 
-<h2>📊 Panel de Estadísticas del Sistema</h2>
+<h2 class="mt-3">📊 Panel de Estadísticas del Sistema</h2>
 
-<div class="kpi-container">
+<div class="kpi-container mt-3">
 
 
     <div class="kpi-box">
@@ -71,8 +73,8 @@
         <strong th:text="${totalAdmins}">0</strong>
     </div>
 </div>
-<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-    <a th:href="@{/admin/dashboard/home}" style="
+<div style="display: flex; justify-content: flex-end; margin-bottom: 20px; margin-right: 30px">
+    <a th:href="@{/admin/home}" style="
         background-color: #155f82;
         color: white;
         padding: 12px 24px;

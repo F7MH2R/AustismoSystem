@@ -1,85 +1,71 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
 <head>
     <meta charset="UTF-8">
     <title>Pregunta para el test</title>
-    <link rel="stylesheet" th:href="@{/css/nav.css}" />
-    <link th:replace="~{fragments/inicio :: bootstrap-css}">
 </head>
-<body>
-<div th:replace="fragments/nav :: nav"></div>
-<div class="container">
-    <div class="row">
-        <div class="col">
+<body layout:fragment="content">
+<div class="container mt-2" >
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
             <h1 class="text-center">Detalles de la pregunta</h1>
         </div>
-    </div>
-
-    <div th:if="${pregunta}" class="row">
-        <div class="col col-lg-6 col-sm-12 border">
-            <form th:object="${pregunta}" class="container mt-4">
-                <div class="mb-3">
-                    <label for="examen" class="form-label">Titulo del examen</label>
-                    <input type="text" class="form-control" id="examen" th:value="*{examen.titulo}" readonly>
+        <div class="card-body">
+            <div th:if="${pregunta}" class="row">
+                <div class="col col-lg-6 col-sm-12 border">
+                    <form th:object="${pregunta}" class="container mt-4">
+                        <div class="mb-3">
+                            <label for="examen" class="form-label">Titulo del examen</label>
+                            <input type="text" class="form-control" id="examen" th:value="*{examen.titulo}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="texto" class="form-label">Texto de la pregunta</label>
+                            <input type="text" class="form-control" id="texto" th:field="*{texto}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipoRespuesta" class="form-label">Tipo de respuesta</label>
+                            <input type="text" class="form-control" id="tipoRespuesta" th:field="*{tipoRespuesta}" readonly>
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label for="texto" class="form-label">Texto de la pregunta</label>
-                    <input type="text" class="form-control" id="texto" th:field="*{texto}" readonly>
-                </div>
-                <div class="mb-3">
-                    <label for="tipoRespuesta" class="form-label">Tipo de respuesta</label>
-                    <input type="text" class="form-control" id="tipoRespuesta" th:field="*{tipoRespuesta}" readonly>
-                </div>
-                <div class="mb-3">
-                    <label for="orden" class="form-label">Orden</label>
-                    <input type="number" class="form-control" id="orden" th:field="*{orden}" readonly>
-                </div>
-            </form>
-        </div>
-        <div class="col col-lg-6 col-sm-12 border">
-            <div th:if="${pregunta.tipoRespuesta == T(com.autismo.neuroprevia.model.enumeration.TipoRespuesta).CERRADA.value}">
-                <form method="post" class="container mt-4" th:action="@{/respuesta/agregar}">
-                    <h3 class="text-center">Agregar opci&oacute;n</h3>
-                    <div class="mb-3">
-                        <label for="textoOpcion">Texto de la  opci&oacute;n:</label>
-                        <input type="text" name="textoRespuesta" id="textoOpcion" class="form-control" required>
-                        <input type="hidden" name="idPregunta" th:value="${pregunta.id}">
-                        <input type="hidden" name="valorNumerico" value="1">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Agregar</button>
-                </form>
-                <div class="container mt-4">
-                    <h5 class="text-center">Opciones agregadas</h5>
-                    <div style="max-height: 250px; overflow-y: auto;" class="border rounded p-2">
-                        <table class="table table-sm table-bordered table-hover mb-0">
-                            <thead class="table-light">
-                            <tr>
-                                <th>Texto</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="respuesta: ${respuestas}">
-                                <td th:text="${respuesta.textoRespuesta}">Opción ejemplo</td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(respuestas)}">
-                                <td colspan="2" class="text-center text-muted">No hay opciones registradas aún.</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="col col-lg-6 col-sm-12 border">
+                    <div th:if="${pregunta.tipoRespuesta == T(com.autismo.neuroprevia.model.enumeration.TipoRespuesta).CERRADA.value}">
+                        <form method="post" class="container mt-4" th:action="@{/respuesta/agregar}">
+                            <h3 class="text-center">Agregar opci&oacute;n</h3>
+                            <div class="mb-3">
+                                <label for="textoOpcion">Texto de la  opci&oacute;n:</label>
+                                <input type="text" name="textoRespuesta" id="textoOpcion" class="form-control" required>
+                                <input type="hidden" name="idPregunta" th:value="${pregunta.id}">
+                                <input type="hidden" name="valorNumerico" value="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Agregar</button>
+                        </form>
+                        <div class="container mt-4">
+                            <h5 class="text-center">Opciones agregadas</h5>
+                            <div style="max-height: 250px; overflow-y: auto;" class="border rounded p-2">
+                                <table class="table table-sm table-bordered table-hover mb-0">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Texto</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="respuesta: ${respuestas}">
+                                        <td th:text="${respuesta.textoRespuesta}">Opción ejemplo</td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(respuestas)}">
+                                        <td colspan="2" class="text-center text-muted">No hay opciones registradas aún.</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col">
-            <div th:replace="~{fragments/inicio :: mensajes}"></div>
-        </div>
     </div>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
-<script th:replace="~{fragments/inicio :: boostrap-script}"></script>
 </body>
 </html>

@@ -8,7 +8,6 @@ import com.autismo.neuroprevia.model.enumeration.TipoRespuesta;
 import com.autismo.neuroprevia.service.ExamenService;
 import com.autismo.neuroprevia.service.PreguntaService;
 import com.autismo.neuroprevia.service.RespuestaPosibleService;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

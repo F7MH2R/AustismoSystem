@@ -68,8 +68,7 @@ public class PacienteController {
 
     @GetMapping("/examen/{id}")
     public String iniciarExamen(@PathVariable Integer id,
-                                Model model,
-                                @AuthenticationPrincipal UsuarioPrincipal principal) {
+                                Model model) {
         Examen examen = examenService.obtenerPorId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Examen no encontrado"));
 
@@ -80,7 +79,6 @@ public class PacienteController {
                         .id(p.getId())
                         .texto(p.getTexto())
                         .tipoRespuesta(TipoRespuesta.fromValue(p.getTipoRespuesta()))
-                        .orden(p.getOrden())
                         .respuestaPosibles(p.getRespuestaPosibles())
                         .build()
                 )

@@ -21,9 +21,9 @@
                 <li class="nav-item" sec:authorize="isAnonymous()">
                     <a class="nav-link" th:href="@{/registrarse}">Registro Paciente</a>
                 </li>
-                <li class="nav-item" sec:authorize="isAnonymous()">
-                    <a class="nav-link" th:href="@{/registrodoctor}">Registro Doctor</a>
-                </li>
+<!--                <li class="nav-item" sec:authorize="isAnonymous()">-->
+<!--                    <a class="nav-link" th:href="@{/registrodoctor}">Registro Doctor</a>-->
+<!--                </li>-->
 
                 <!-- Paciente -->
                 <li class="nav-item" sec:authorize="hasRole('PACIENTE')">
@@ -55,17 +55,24 @@
                     <a class="nav-link" th:href="@{/especialista/informes}">Informes</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
-                    <a class="nav-link" th:href="@{/examenes/crear}">Crear nuevo ex&aacute;men</a>
+                    <a class="nav-link" th:href="@{/examenes/realizados}">Pacientes</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
-                    <a class="nav-link" th:href="@{/doctor/pacientes}">Pacientes</a>
+                <li class="nav-item dropdown" sec:authorize="hasRole('DOCTOR')">
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Ex&aacute;menes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/examenes/crear}">Crear nuevo</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/examenes/lista}">Ver creados</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
-                    <a class="nav-link" th:href="@{/doctor/diagnosticos}">Diagnósticos</a>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">
-                    <a class="nav-link" th:href="@{/examenes/realizados}">Ex&aacute;menes Realizados</a>
-                </li>
+<!--                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">-->
+<!--                    <a class="nav-link" th:href="@{/examenes/lista}">Ex&aacute;menes Creados</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item" sec:authorize="hasRole('DOCTOR')">-->
+<!--                    <a class="nav-link" th:href="@{/examenes/crear}">Crear nuevo ex&aacute;men</a>-->
+<!--                </li>-->
 
                 <!-- Admin -->
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')">
@@ -74,15 +81,15 @@
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link" th:href="@{/admin/usuarios}">Usuarios</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link" th:href="@{/admin/examenes}">Exámenes</a>
-                </li>
+<!--                <li class="nav-item" sec:authorize="hasRole('ADMIN')">-->
+<!--                    <a class="nav-link" th:href="@{/admin/examenes}">Exámenes</a>-->
+<!--                </li>-->
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link" th:href="@{/admin/estadisticas}">Estadísticas</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link" th:href="@{/admin/reportes}">Reportes</a>
-                </li>
+<!--                <li class="nav-item" sec:authorize="hasRole('ADMIN')">-->
+<!--                    <a class="nav-link" th:href="@{/admin/reportes}">Reportes</a>-->
+<!--                </li>-->
 
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:href="@{/logout}">Salir</a>

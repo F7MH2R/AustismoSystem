@@ -8,7 +8,8 @@
 </head>
 <body>
 <div layout:fragment="content" class="container mt-5">
-    <div class="row justify-content-center">
+
+    <div class="row justify-content-center" th:if="${examen}">
         <div class="col col-auto">
             <h2 >Titulo del examen:</h2>
         </div>

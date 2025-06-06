@@ -15,7 +15,7 @@ public class PreguntaDto {
     private String texto;
     private TipoRespuesta tipoRespuesta;
     @Builder.Default
-    private int orden = 1;
+    private Integer orden = 1;
     private List<RespuestaPosible> respuestaPosibles;
 
     public static PreguntaDto fromEntity(Pregunta p) {

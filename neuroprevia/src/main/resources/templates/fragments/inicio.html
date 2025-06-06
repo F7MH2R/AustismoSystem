@@ -8,17 +8,17 @@
           th:fragment="bootstrap-css">
 </head>
 <body>
-<div th:fragment="mensajes" class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div th:if="${mensaje}" id="mensajeToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+<div th:fragment="mensajes" class="toast-container position-fixed top-0 end-0 p-3">
+    <div th:if="${mensaje}" id="mensajeToast" class="toast text-bg-info show" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
-            <strong class="me-auto">Acci&oacute;n completada</strong>
+            <strong class="me-auto">Informaci&oacute;n</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body" th:text="${mensaje}">Mensaje por defecto</div>
     </div>
-    <div th:if="${mensajeError}" id="errorToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div th:if="${mensajeError}" id="errorToast" class="toast text-bg-danger show" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
-            <strong class="me-auto">Error en el proceso</strong>
+            <strong class="me-auto">Informaci&oacute;n</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body" th:text="${mensajeError}">Error</div>
