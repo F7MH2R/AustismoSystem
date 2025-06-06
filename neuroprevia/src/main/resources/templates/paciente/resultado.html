@@ -1,17 +1,65 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout :: layout(~{::title}, ~{::body})">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="es"
+      layout:decorate="~{layouts/main}">
 <head>
-    <title>Resultado del Examen</title>
+    <meta charset="UTF-8">
+    <title>Detalle del Informe Clínico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container mt-2 col-lg-8">
-    <div class="card">
-        <h2>Resultado del Examen</h2>
-        <p><strong>Fecha:</strong> <span th:text="${#temporals.format(r.fechaRealizacion,'dd/MM/yyyy HH:mm')}"></span></p>
-        <p><strong>Puntuación:</strong> <span th:text="${r.resultadoTotal}"></span></p>
-        <p><strong>Interpretación:</strong> <span th:text="${r.interpretacion}"></span></p>
-        <a th:href="@{/paciente/pdf/{id}(id=${r.id})}">Descargar Informe en PDF</a>
+<body class="bg-light">
+
+<div layout:fragment="content" class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">Informe Clínico de <span th:text="${informe.usuario.nombre}">Nombre Paciente</span></h4>
+        </div>
+        <div class="card-body">
+            <!-- Datos generales del informe -->
+            <p><strong>Examen:</strong> <span th:text="${informe.examen.titulo}">Título del examen</span></p>
+            <p>
+                <strong>Fecha de realización:</strong>
+                <span  th:text="${#dates.format(informe.fechaRealizacion, 'dd/MM/yyyy HH:mm')}">
+                >
+                    01/01/2025
+                </span>
+            </p>
+            <p><strong>Resultado total:</strong> <span th:text="${informe.resultadoTotal}">0.0</span></p>
+            <p><strong>Interpretación:</strong>
+                <span th:text="${informe.interpretacion}">Texto interpretativo</span>
+            </p>
+
+            <hr>
+            <h5>Detalle de Respuestas</h5>
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Pregunta</th>
+                    <th>Respuesta dada</th>
+                    <th>Valor numérico</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="detalle, iterStat : ${respuestas}">
+                    <td th:text="${iterStat.index + 1}">1</td>
+                    <td th:text="${detalle.pregunta.texto}">Texto de la pregunta</td>
+                    <td th:text="${detalle.respuesta.textoRespuesta}">Texto de la respuesta</td>
+                    <td th:text="${detalle.respuesta.valorNumerico}">0</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Botones -->
+            <div class="mt-4 d-flex gap-2">
+                <a th:href="@{/paciente/historial}" class="btn btn-secondary">⬅️ Volver al Historial</a>
+                <a th:href="@{'/informes/' + ${informe.id} + '/generar-pdf'}" class="btn btn-danger" target="_blank">🧾 Descargar PDF</a>
+
+            </div>
+        </div>
     </div>
 </div>
+
 </body>
 </html>
