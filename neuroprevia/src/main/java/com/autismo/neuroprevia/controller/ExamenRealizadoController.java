@@ -83,7 +83,7 @@ public class ExamenRealizadoController {
         model.addAttribute("tipos", TipoExamen.values());
 
         if(Objects.nonNull(nombre)) {
-            examenesRealizados = examenesRealizados.stream().filter(examen -> examen.getNombreUsuario().contains(nombre)).collect(Collectors.toList());
+            examenesRealizados = examenesRealizados.stream().filter(examen -> examen.getNombreUsuario().toLowerCase().contains(nombre.toLowerCase())).collect(Collectors.toList());
         }
 
         if (examenesRealizados.isEmpty()) {

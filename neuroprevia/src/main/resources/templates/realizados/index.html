@@ -7,65 +7,64 @@
     <title>Ex&aacute;menes completados</title>
 </head>
 <body>
-<div layout:fragment="content" class="container">
-    <div class="row">
-        <div class="col">
-            <h1 class="text-center">
-                Pacientes
-            </h1>
+<div layout:fragment="content" class="container mt-2">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h1 class="text-center">Pacientes</h1>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col col-lg-8 col-auto">
-            <h2>Filtrar</h2>
-            <form th:action="@{/examenes/realizados/filtrar}" method="get">
-                <div class="mb-3">
-                    <label for="tipoExamen" class="form-label">Tipo:</label>
-                    <select class="form-select" id="tipoExamen" aria-describedby="tipo-help" name="tipo">
-                        <option value="" disabled selected>Seleccione un tipo</option>
-                        <option th:each="tipo : ${tipos}"
-                                th:value="${tipo.name()}"
-                                th:text="${tipo.value}">
-                        </option>
-                    </select>
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col col-lg-8 col-auto">
+                    <h2>Filtrar</h2>
+                    <form th:action="@{/examenes/realizados/filtrar}" method="get">
+                        <div class="mb-3">
+                            <label for="tipoExamen" class="form-label">Tipo:</label>
+                            <select class="form-select" id="tipoExamen" aria-describedby="tipo-help" name="tipo">
+                                <option value="" disabled selected>Seleccione un tipo</option>
+                                <option th:each="tipo : ${tipos}"
+                                        th:value="${tipo.name()}"
+                                        th:text="${tipo.value}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre:</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre">
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div class="col col-auto">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <td>Ex&aacute;men</td>
+                            <td>Fecha de realizaci&oacute;n</td>
+                            <td>Interpretaci&oacute;n</td>
+                            <td>Resultado total</td>
+                            <td>Paciente que realiz&oacute; el ex&aacute;men</td>
+                            <td>Ver detalles</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${examenesRealizados}" th:each="examenRealizado : ${examenesRealizados}">
+                            <td th:text="${examenRealizado.examen.titulo}"></td>
+                            <td th:text="${#dates.format(examenRealizado.fechaRealizacion, 'dd/MM/yyyy HH:mm')}"></td>
+                            <td th:text="${examenRealizado.interpretacion}"></td>
+                            <td th:text="${examenRealizado.resultadoTotal}"></td>
+                            <td th:text="${examenRealizado.nombreUsuario}"></td>
+                            <td>
+                                <a th:href="@{/examenes/realizados/{id}(id=${examenRealizado.id})}">Ver</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
-            </form>
-        </div>
-    </div>
-    <div class="row justify-content-center mt-3">
-        <div class="col col-auto">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <td>Ex&aacute;men</td>
-                        <td>Fecha de realizaci&oacute;n</td>
-                        <td>Interpretaci&oacute;n</td>
-                        <td>Resultado total</td>
-                        <td>Paciente que realiz&oacute; el ex&aacute;men</td>
-                        <td>Ver detalles</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:if="${examenesRealizados}" th:each="examenRealizado : ${examenesRealizados}">
-                        <td th:text="${examenRealizado.examen.titulo}"></td>
-                        <td th:text="${#dates.format(examenRealizado.fechaRealizacion, 'dd/MM/yyyy HH:mm')}"></td>
-                        <td th:text="${examenRealizado.interpretacion}"></td>
-                        <td th:text="${examenRealizado.resultadoTotal}"></td>
-                        <td th:text="${examenRealizado.nombreUsuario}"></td>
-                        <td>
-                            <a th:href="@{/examenes/realizados/{id}(id=${examenRealizado.id})}">Ver</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>
