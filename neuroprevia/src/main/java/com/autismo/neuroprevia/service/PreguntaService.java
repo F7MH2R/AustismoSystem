@@ -29,10 +29,11 @@ public class PreguntaService {
         if(examen.isEmpty())
             throw new EntityNotFoundException("Examen no valido");
 
+        int orden = repository.countByExamenId(examen.get().getId()) + 1;
         entity.setExamen(examen.get());
         entity.setTexto(dto.getTexto());
         entity.setTipoRespuesta(dto.getTipoRespuesta().getValue());
-        entity.setOrden(dto.getOrden());
+        entity.setOrden(orden);
 
         return repository.save(entity);
     }

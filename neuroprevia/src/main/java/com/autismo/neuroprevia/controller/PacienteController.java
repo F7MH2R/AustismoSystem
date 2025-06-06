@@ -80,7 +80,6 @@ public class PacienteController {
                         .id(p.getId())
                         .texto(p.getTexto())
                         .tipoRespuesta(TipoRespuesta.fromValue(p.getTipoRespuesta()))
-                        .orden(p.getOrden())
                         .respuestaPosibles(p.getRespuestaPosibles())
                         .build()
                 )
