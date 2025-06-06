@@ -10,11 +10,8 @@ import com.autismo.neuroprevia.model.enumeration.TipoExamen;
 import com.autismo.neuroprevia.model.enumeration.TipoRespuesta;
 import com.autismo.neuroprevia.service.ExamenService;
 import com.autismo.neuroprevia.service.PreguntaService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,11 +45,6 @@ public class ExamenController {
     @PostMapping("/crear")
     public String crear(@ModelAttribute("examen") ExamenDto examen, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal) {
         Usuario usuario = usuarioPrincipal.getUsuario();
-
-        if(examen.getEdadMaxima() <= examen.getEdadMinima()) {
-            attributes.addFlashAttribute("mensaje", "Error en el rango de edad");
-        }
-
         Examen entity = service.crearExamen(examen, usuario.getId());
         attributes.addFlashAttribute("examen", entity);
         return "redirect:/examenes/ver/".concat(String.valueOf(entity.getId())).concat("/preguntas");

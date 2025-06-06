@@ -48,7 +48,7 @@ public class ExamenRealizadoController {
     }
 
     @GetMapping("/{id}")
-    public String detalles(@PathVariable("id") Integer id, Model model, @AuthenticationPrincipal UsuarioPrincipal usuario) {
+    public String detalles(@PathVariable("id") Integer id, Model model) {
         log.info("Consulta de examen realizado: id={}", id);
         Optional<ExamenRealizado> examenRealizado = service.obtenerPorId(id);
 

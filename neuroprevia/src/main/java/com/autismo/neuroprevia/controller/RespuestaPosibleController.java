@@ -1,7 +1,6 @@
 package com.autismo.neuroprevia.controller;
 
 import com.autismo.neuroprevia.model.Pregunta;
-import com.autismo.neuroprevia.model.RespuestaPosible;
 import com.autismo.neuroprevia.model.dto.RespuestaPosibleDto;
 import com.autismo.neuroprevia.service.PreguntaService;
 import com.autismo.neuroprevia.service.RespuestaPosibleService;
@@ -29,9 +28,6 @@ public class RespuestaPosibleController {
         if(pregunta.isEmpty()) {
             attributes.addFlashAttribute("mensajeError", "Pregunta no encontrada");
         } else {
-            RespuestaPosible entity = new RespuestaPosible();
-            entity.setPregunta(pregunta.get());
-            entity.setTextoRespuesta(dto.getTextoRespuesta());
             service.crear(dto, pregunta.get().getId());
             attributes.addFlashAttribute("mensaje", "Opcion agregada con exito");
         }
