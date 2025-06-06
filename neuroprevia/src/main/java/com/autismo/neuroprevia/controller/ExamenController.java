@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +34,7 @@ import java.util.Optional;
 @RequestMapping("/examenes")
 @Slf4j
 public class ExamenController {
-
+    private final ExamenService examenService;
     private final ExamenService service;
     private final PreguntaService preguntaService;
 
@@ -85,8 +86,6 @@ public class ExamenController {
         return "redirect:/examenes/ver/".concat(String.valueOf(idExamen)).concat("/preguntas");
     }
 
-    @Autowired
-    private ExamenService examenService;
     @GetMapping
     public String listar(
             @RequestParam(required=false) String grupoEdad,   // "niño" o "adulto"
@@ -100,6 +99,21 @@ public class ExamenController {
         List<Examen> examenes = examenService.listar(edad, tipo);
         model.addAttribute("examenes", examenes);
         return "paciente/examenes";
+    }
+
+    @RequestMapping("/lista")
+    public String examenesPorDoctor(@AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal, Model model) {
+        Usuario usuario = usuarioPrincipal.getUsuario();
+        log.info("Obteniendo todos los examenes para el usuario: id={}", usuario.getId());
+        List<Examen> examenesDoctor = examenService.obtenerPorIdCreadoPor(usuario);
+
+        if (examenesDoctor.isEmpty()) {
+            model.addAttribute("mensajeError", "No se han encontrado exámenes");
+            return "examen/lista";
+        }
+
+        model.addAttribute("examenes", examenesDoctor);
+        return "examen/lista";
     }
 
 }

@@ -122,3 +122,7 @@ hr {
 .container-fluid {
   height: 50px
 }
+
+.dropdown-menu {
+  --bs-dropdown-bg: #34495E!important;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Ex&aacute;menes</title>
+</head>
+<body>
+<div class="container mt-3" layout:fragment="content">
+    <div class="card shadow-sm">
+        <div class="card-title bg-primary text-white">
+            <h1 class="text-center">Ex&aacute;menes creados</h1>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>T&iacute;tulo</td>
+                        <td>Tipo</td>
+                        <td>Edad m&iacute;nima</td>
+                        <td>Edad m&aacute;xima</td>
+                        <td>Opciones</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="examen : ${examenes}">
+                        <td th:text="${examen.titulo}"></td>
+                        <td th:text="${examen.tipo}"></td>
+                        <td th:text="${examen.edadMinima}"></td>
+                        <td th:text="${examen.edadMaxima}"></td>
+                        <td>
+                            <a th:href="@{/examenes/ver/{id}/preguntas(id=${examen.id})}" class="btn-primary">Ver</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

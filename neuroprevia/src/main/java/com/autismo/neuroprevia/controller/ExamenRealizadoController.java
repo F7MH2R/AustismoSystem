@@ -63,7 +63,6 @@ public class ExamenRealizadoController {
         List<RespuestaDada> respuestaDadas = respuestaDadaService.obtenerRespuestasPorPreguntasYExamenRealizado(preguntas, realizado);
         model.addAttribute("respuestas", respuestaDadas);
         model.addAttribute("examen", realizado.getExamen());
-//        model.addAttribute();
         return "realizados/detalles";
     }
 
