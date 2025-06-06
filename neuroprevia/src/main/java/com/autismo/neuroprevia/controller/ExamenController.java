@@ -47,6 +47,11 @@ public class ExamenController {
     @PostMapping("/crear")
     public String crear(@ModelAttribute("examen") ExamenDto examen, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal) {
         Usuario usuario = usuarioPrincipal.getUsuario();
+
+        if(examen.getEdadMaxima() <= examen.getEdadMinima()) {
+            attributes.addFlashAttribute("mensaje", "Error en el rango de edad");
+        }
+
         Examen entity = service.crearExamen(examen, usuario.getId());
         attributes.addFlashAttribute("examen", entity);
         return "redirect:/examenes/ver/".concat(String.valueOf(entity.getId())).concat("/preguntas");

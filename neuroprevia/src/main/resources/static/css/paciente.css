@@ -560,3 +560,8 @@ form {
         font-size: 0.9rem;
     }
 }
+
+.btn-primary {
+    --bs-btn-bg: #2c3e50!important;
+    --bs-btn-border-color: #2c3e50!important;
+}

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Objects;
@@ -72,7 +71,14 @@ public class ExamenRealizadoController {
     public String filtrar(@RequestParam(value = "tipo", required = false) TipoExamen tipoExamen, @RequestParam(value = "nombre", required = false) String nombre, @AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal, Model model) {
         log.info("Realizando filtrado de los examenes realizados, parametros recibidos: tipo={}, nombre={}", tipoExamen, nombre);
         Usuario usuario = usuarioPrincipal.getUsuario();
-        List<Examen> examenesDoctor = examenService.obtenerPorCreadorYTipo(usuario, tipoExamen);
+        List<Examen> examenesDoctor;
+
+        if(Objects.isNull(tipoExamen)) {
+            examenesDoctor = examenService.obtenerPorIdCreadoPor(usuario);
+        } else {
+            examenesDoctor = examenService.obtenerPorCreadorYTipo(usuario, tipoExamen);
+        }
+
         List<ExamenRealizado> examenesRealizados = service.obtenerExamenesRealizadosPorListaId(examenesDoctor);
         model.addAttribute("tipos", TipoExamen.values());
 

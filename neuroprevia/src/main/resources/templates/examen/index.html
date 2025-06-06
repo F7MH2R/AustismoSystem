@@ -46,6 +46,19 @@
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </div>
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const edadMin = parseInt(document.getElementById('edadMinima').value);
+            const edadMax = parseInt(document.getElementById('edadMaxima').value);
+            console.log("edad minina: ", edadMin);
+            console.log("Edad maxima: ", edadMax);
+
+            if (edadMin >= edadMax) {
+                e.preventDefault();
+                alert('La edad mínima debe ser menor que la edad máxima.');
+            }
+        });
+    </script>
 </div>
 </body>
 </html>
