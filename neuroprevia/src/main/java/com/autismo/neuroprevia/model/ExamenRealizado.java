@@ -12,6 +12,7 @@ import java.time.Instant;
 @Setter
 @Table(name = "examenes_realizados")
 public class ExamenRealizado {
+    private final String NOMBRE_COMPLETO = "%s %s";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +57,10 @@ public class ExamenRealizado {
 
     public void setInterpretacion(String interpretacion) {
         this.interpretacion = interpretacion;
+    }
+
+    public String getNombreUsuario() {
+        return String.format(NOMBRE_COMPLETO, this.usuario.getNombre(), this.usuario.getApellido()).trim();
     }
 
 }

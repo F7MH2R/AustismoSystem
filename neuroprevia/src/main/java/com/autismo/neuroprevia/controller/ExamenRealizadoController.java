@@ -6,6 +6,7 @@ import com.autismo.neuroprevia.model.Pregunta;
 import com.autismo.neuroprevia.model.RespuestaDada;
 import com.autismo.neuroprevia.model.Usuario;
 import com.autismo.neuroprevia.model.UsuarioPrincipal;
+import com.autismo.neuroprevia.model.enumeration.TipoExamen;
 import com.autismo.neuroprevia.service.ExamenRealizadoService;
 import com.autismo.neuroprevia.service.ExamenService;
 import com.autismo.neuroprevia.service.PreguntaService;
@@ -18,9 +19,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/examenes/realizados")
@@ -39,6 +44,7 @@ public class ExamenRealizadoController {
         List<ExamenRealizado> examenesRealizados = service.obtenerExamenesRealizadosPorListaId(examenesDoctor);
         model.addAttribute("examenes", examenesDoctor);
         model.addAttribute("examenesRealizados", examenesRealizados);
+        model.addAttribute("tipos", TipoExamen.values());
         return "realizados/index";
     }
 
@@ -60,6 +66,27 @@ public class ExamenRealizadoController {
         model.addAttribute("examen", realizado.getExamen());
 //        model.addAttribute();
         return "realizados/detalles";
+    }
+
+    @GetMapping("/filtrar")
+    public String filtrar(@RequestParam(value = "tipo", required = false) TipoExamen tipoExamen, @RequestParam(value = "nombre", required = false) String nombre, @AuthenticationPrincipal UsuarioPrincipal usuarioPrincipal, Model model) {
+        log.info("Realizando filtrado de los examenes realizados, parametros recibidos: tipo={}, nombre={}", tipoExamen, nombre);
+        Usuario usuario = usuarioPrincipal.getUsuario();
+        List<Examen> examenesDoctor = examenService.obtenerPorCreadorYTipo(usuario, tipoExamen);
+        List<ExamenRealizado> examenesRealizados = service.obtenerExamenesRealizadosPorListaId(examenesDoctor);
+        model.addAttribute("tipos", TipoExamen.values());
+
+        if(Objects.nonNull(nombre)) {
+            examenesRealizados = examenesRealizados.stream().filter(examen -> examen.getNombreUsuario().contains(nombre)).collect(Collectors.toList());
+        }
+
+        if (examenesRealizados.isEmpty()) {
+           model.addAttribute("mensaje", "No se han encontrado resultados");
+           return "realizados/index";
+        }
+
+        model.addAttribute("examenesRealizados", examenesRealizados);
+        return "realizados/index";
     }
 
 }

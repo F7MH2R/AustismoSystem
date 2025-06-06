@@ -3,6 +3,7 @@ package com.autismo.neuroprevia.service;
 import com.autismo.neuroprevia.model.Examen;
 import com.autismo.neuroprevia.model.Usuario;
 import com.autismo.neuroprevia.model.dto.ExamenDto;
+import com.autismo.neuroprevia.model.enumeration.TipoExamen;
 import com.autismo.neuroprevia.repository.examenRepository;
 import com.autismo.neuroprevia.repository.usuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 public class ExamenService {
     private final examenRepository repository;
     private final usuarioRepository usuarioRepository;
-    private final examenRepository repo;
 
     public Examen crearExamen(ExamenDto dto, int creadoPor) {
         log.info("Crear examen: dto={}", dto);
@@ -51,14 +51,18 @@ public class ExamenService {
 
     public List<Examen> listar(Integer edad, String tipo) {
         if (edad != null && tipo != null) {
-            return repo.findByEdad(edad).stream()
+            return repository.findByEdad(edad).stream()
                     .filter(e -> e.getTipo().equalsIgnoreCase(tipo))
                     .collect(Collectors.toList());
         } else if (edad != null) {
-            return repo.findByEdad(edad);
+            return repository.findByEdad(edad);
         } else if (tipo != null) {
-            return repo.findByTipo(tipo);
+            return repository.findByTipo(tipo);
         }
-        return repo.findAll();
+        return repository.findAll();
+    }
+
+    public List<Examen> obtenerPorCreadorYTipo(Usuario usuario, TipoExamen tipoExamen) {
+        return repository.findAllByCreadoPorAndTipo(usuario, tipoExamen.getValue());
     }
 }
