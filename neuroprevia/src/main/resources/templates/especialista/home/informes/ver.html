@@ -14,7 +14,7 @@
         </div>
         <div class="card-body">
             <p><strong>Examen:</strong> <span th:text="${informe.examenTitulo}">Nombre Examen</span></p>
-            <p><strong>Fecha de realización:</strong> <span th:text="${#temporals.format(informe.fechaRealizacion, 'dd/MM/yyyy')}">01/01/2025</span></p>
+            <p><strong>Fecha de realización:</strong> <span th:text="${#temporals.format(informe.fechaRealizacion, 'dd/MM/yyyy HH:mm')}">01/01/2025</span></p>
             <p><strong>Resultado total:</strong> <span th:text="${informe.resultadoTotal}">0.0</span></p>
             <p><strong>Interpretación:</strong> <span th:text="${informe.interpretacion}">Texto interpretativo</span></p>
 

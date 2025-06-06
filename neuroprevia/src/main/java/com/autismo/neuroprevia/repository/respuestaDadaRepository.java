@@ -20,4 +20,10 @@ public interface respuestaDadaRepository extends JpaRepository<RespuestaDada, In
             Integer usuarioId,
             Integer examenId
     );
+
+
+    /**
+     * Devuelve todas las respuestas dadas para un ExamenRealizado específico.
+     */
+    List<RespuestaDada> findAllByExamenRealizado_Id(Integer examenRealizadoId);
 }

@@ -155,12 +155,12 @@ public class PacienteController {
         ).getYears();
 
         // 2) Trae los exámenes filtrados por edad (y por tipo si lo quisieras)
-        List<Examen> examenesFiltrados = examenService.listar(edad, null);
+        List<Examen> examenesFiltrados = examenService.listar(null, null);
 
         // 3) Mapea cada Examen a ExamenVista, calculando número de preguntas y duración estimada
         List<ExamenVista> lista = examenesFiltrados.stream().map(e -> {
             int numPreguntas = preguntaRepo.countByExamenId(e.getId());
-            int duracion = numPreguntas * 2; // p.ej. 2 minutos por pregunta
+            int duracion = numPreguntas * 2; //
             return new ExamenVista(
                     e.getId(),
                     e.getTitulo(),
@@ -189,10 +189,36 @@ public class PacienteController {
     }
 
     @GetMapping("/resultado/{rid}")
-    public String resultado(@PathVariable Long rid, Model model) {
-        model.addAttribute("resultadoId", rid);
+    public String resultado(
+            @PathVariable("rid") Integer rid,
+            Model model,
+            @AuthenticationPrincipal UsuarioPrincipal principal
+    ) {
+        // 1) Recuperar el ExamenRealizado; si no existe, lanzar excepción o redirigir.
+        ExamenRealizado er = examenRealizadoRepo.findById(rid)
+                .orElseThrow(() -> new IllegalArgumentException("Informe no encontrado: " + rid));
+
+        // 2) Comprobar que el examen realmente pertenece al usuario que está logueado
+        //    (evitamos que un paciente A vea informes de paciente B)
+        int usuarioId = principal.getUsuario().getId();
+        if (er.getUsuario().getId() != usuarioId) {
+            throw new IllegalArgumentException("No tienes permiso para ver este informe.");
+        }
+
+
+        // 3) Recuperar todas las respuestas dadas para este informe
+        List<RespuestaDada> detalles = respuestaDadaRepo.findAllByExamenRealizado_Id(rid);
+
+        // 4) Ya tenemos:
+        //    - er: ExamenRealizado (incluye fecha, resultadoTotal, interpretación si la hubiere)
+        //    - detalles: lista de RespuestaDada (cada uno vincula Pregunta + RespuestaPosible con su valorNumérico)
+
+        model.addAttribute("informe", er);
+        model.addAttribute("respuestas", detalles);
+
         return "paciente/resultado";
     }
+
 
     @GetMapping("/pdf/{id}")
     public ResponseEntity<byte[]> descargarPdf(@PathVariable Integer id) throws IOException {
