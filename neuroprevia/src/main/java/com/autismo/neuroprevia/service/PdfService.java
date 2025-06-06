@@ -8,6 +8,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -27,7 +28,11 @@ public class PdfService {
 
             // Datos principales
             documento.add(new Paragraph("Examen: " + informe.getExamenTitulo()));
-            documento.add(new Paragraph("Fecha de realización: " + informe.getFechaRealizacion().toLocalDate()));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String fechaFormateada = informe.getFechaRealizacion().format(formatter);
+            documento.add(new Paragraph("Fecha de realización: " + fechaFormateada));
+
+           // documento.add(new Paragraph("Fecha de realización: " + informe.getFechaRealizacion().toLocalDate()+" "+informe.getFechaRealizacion().toLocalTime()));
             documento.add(new Paragraph("Resultado total: " + informe.getResultadoTotal()));
             documento.add(new Paragraph("Interpretación: " + informe.getInterpretacion()));
             documento.add(new Paragraph(" "));

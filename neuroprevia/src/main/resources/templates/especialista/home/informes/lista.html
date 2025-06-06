@@ -62,7 +62,7 @@
                         <tbody>
                         <tr th:each="s : ${seguimientos}">
                             <td th:text="${s.paciente != null ? s.paciente.nombre : 'Sin nombre'}">Paciente</td>
-                            <td th:text="${#temporals.format(s.fechaCita, 'dd/MM/yyyy')}">30/05/2025</td>
+                            <td th:text="${#temporals.format(s.fechaCita, 'dd/MM/yyyy HH:mm')}">30/05/2025</td>
                             <td>
                                 <span th:text="${s.estado}"
                                       th:classappend="${s.estado == 'Pendiente' ? 'badge bg-warning text-dark' : (s.estado == 'Realizado' ? 'badge bg-success' : 'badge bg-secondary')}">

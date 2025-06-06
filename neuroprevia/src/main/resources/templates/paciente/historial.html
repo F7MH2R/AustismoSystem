@@ -22,7 +22,7 @@
             <!-- Iteramos sobre cada ExamenRealizado en el historial -->
             <tr th:each="r : ${historial}">
                 <!-- Formateo de fecha -->
-                <td th:text="${#dates.format(r.fechaRealizacion, 'dd/MM/yyyy')}">
+                <td th:text="${#dates.format(r.fechaRealizacion, 'dd/MM/yyyy HH:mm')}">
                     01/01/2025
                 </td>
 
@@ -40,13 +40,9 @@
                 <td>
                     <a th:href="@{/paciente/resultado/{id}(id=${r.id})}"
                        class="accion-btn ver">
-                        Ver
+                        VER EXAMEN
                     </a>
-                    |
-                    <a th:href="@{/paciente/pdf/{id}(id=${r.id})}"
-                       class="accion-btn pdf">
-                        PDF
-                    </a>
+
                 </td>
             </tr>
             </tbody>
