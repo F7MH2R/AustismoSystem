@@ -234,79 +234,231 @@ form {
 }
 
 
-/* ---------------------------
-   Estilos para la tabla de Examen
-   --------------------------- */
+
+/* ---------------------------------------------------------------
+   ESTILOS PARA el EXAMEN
+   --------------------------------------------------------------- */
+
+/* Ocultamos todas las filas de pregunta */
+.pregunta-row {
+  display: none;
+}
+/* Mostramos sólo la fila con data-index="0" */
+.pregunta-row[data-index="0"] {
+  display: table-row;
+}
+/* Ocultamos el botón al inicio */
+#examen-submit-container {
+  display: none;
+  margin-top: 16px;
+}
+
+
+/* 1) Título y descripción del examen */
+.examen-titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.examen-descripcion {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  line-height: 1.4;
+}
 
 .examen-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card-background);
-    box-shadow: 0 2px 4px var(--card-shadow);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-top: 24px;
-    margin-bottom: 24px;
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 24px 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
-/* Encabezado de la tabla de examen */
+
 .examen-table thead {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
-
 .examen-table th {
-    color: #ecf0f1;
-    text-align: left;
-    padding: 12px 16px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    vertical-align: middle;
+  color: #ffffff;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* Filas del cuerpo de la tabla */
+.examen-table th:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+.examen-table th:nth-child(2) {
+  width: 50%;
+  text-align: left;
+}
+.examen-table th:nth-child(3) {
+  width: 40%;
+  text-align: center;
+}
+
 .examen-table tbody tr {
-    border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .examen-table tbody tr:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .examen-table td {
-    padding: 12px 16px;
-    color: var(--text-color);
-    font-size: 16px; /* ajusta al tamaño deseado */
-    vertical-align: top;
+  padding: 12px 16px;
+  color: var(--text-color);
+  font-size: 16px;
+  vertical-align: middle;
 }
 
-/* Hover en cada fila */
+.examen-table td:nth-child(1) {
+  text-align: left;
+  font-weight: 600;
+}
+
+.examen-table td:nth-child(2) {
+  text-align: left;
+}
+
+.examen-table td:nth-child(3) {
+  text-align: center;
+}
+
 .examen-table tbody tr:hover {
-    background-color: var(--background-color);
+  background-color: #f9f9f9;
 }
 
-/* Opciones de respuesta dentro de la celda:
-   las presentamos en bloque con algo de espacio vertical */
+.examen-table .opciones-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 4px 0;
+}
+
 .examen-table .opciones-container label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: #f5f5f5;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+  width: 100%;
 }
 
-/* Si quieres que el input y el texto estén alineados:
-   ajusta márgenes/paddings según convenga */
+.examen-table .opciones-container label:hover {
+  background-color: #e8e8e8;
+}
+
 .examen-table .opciones-container input[type="radio"] {
-    margin-right: 8px;
+  accent-color: var(--primary-color);
+  width: 1rem;
+  height: 1rem;
 }
 
-/* Botón “Enviar Examen” centrado bajo la tabla */
-.examen-submit-container {
-    text-align: center;
-    margin-top: 16px;
-}
 
 .examen-table .pregunta-texto {
-    font-weight: 600;
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: #333333;
 }
+
+.examen-submit-container {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.examen-submit-container button {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 12px 32px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.examen-submit-container button:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.examen-submit-container button:active {
+  transform: translateY(0px);
+}
+
+@media screen and (max-width: 768px) {
+  .examen-table th,
+  .examen-table td {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .examen-table thead {
+    display: none;
+  }
+  .examen-table {
+    border: none;
+  }
+  .examen-table tbody tr {
+    display: block;
+    margin-bottom: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .examen-table tbody tr td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+  }
+  .examen-table tbody tr td:nth-child(1) {
+    width: 20%;
+  }
+  .examen-table tbody tr td:nth-child(2) {
+    width: 80%;
+  }
+  .examen-table tbody tr td:nth-child(3) {
+    display: block;
+    width: 100%;
+    padding-top: 8px;
+  }
+  .examen-table .opciones-container {
+    gap: 6px;
+  }
+  .examen-table .opciones-container label {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+  .examen-submit-container {
+    margin-top: 16px;
+  }
+  .examen-submit-container button {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+}
+
+
+
 
 
 

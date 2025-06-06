@@ -6,10 +6,9 @@
 </head>
 <body>
 <div class="container mt-2 col-lg-8">
-    <h2 th:text="${examen.titulo}">Título del examen</h2>
-    <p th:text="${examen.descripcion}">Descripción del examen</p>
+    <h2 class="examen-titulo" th:text="${examen.titulo}">Título del examen</h2>
+    <p class="examen-descripcion" th:text="${examen.descripcion}">Descripción del examen</p>
 
-    <!-- Tabla que muestra todas las preguntas -->
     <form id="formExamen" method="post" th:action="@{/paciente/examen/{id}/submit(id=${examen.id})}">
         <table class="examen-table">
             <thead>
@@ -20,17 +19,13 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Iteramos sobre la lista de preguntas -->
-            <tr th:each="pregunta, stat : ${preguntas}">
-                <!-- Número de pregunta -->
+            <tr th:each="pregunta, stat : ${preguntas}" class="pregunta-row"
+                th:attr="data-index=${stat.index}">
                 <td class="pregunta-texto" th:text="${stat.index + 1}">1</td>
 
-                <!-- Texto de la pregunta -->
                 <td class="pregunta-texto" th:text="${pregunta.texto}">
                     ¿Aquí va el texto de la pregunta…?
                 </td>
-
-                <!-- Opciones de respuesta (radios) -->
                 <td>
                     <div class="opciones-container" th:each="op : ${pregunta.respuestaPosibles}">
                         <label>
@@ -45,14 +40,46 @@
             </tr>
             </tbody>
         </table>
-        <!-- Botón Enviar Examen centrado -->
-        <div class="examen-submit-container">
-            <button type="submit"
-                    class="btn btn-primary">
+        <div id="examen-submit-container" class="examen-submit-container">
+            <button type="submit" class="btn btn-primary">
                 Enviar Examen
             </button>
         </div>
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const filas = document.querySelectorAll('.pregunta-row');
+      const filasArray = Array.from(filas);
+      const totalPreguntas = filasArray.length;
+
+      function mostrarPregunta(indice) {
+        filasArray.forEach((fila, idx) => {
+          fila.style.display = idx === indice ? 'table-row' : 'none';
+        });
+        if (indice === totalPreguntas - 1) {
+          document.getElementById('examen-submit-container').style.display = 'block';
+        } else {
+          document.getElementById('examen-submit-container').style.display = 'none';
+        }
+      }
+
+      mostrarPregunta(0);
+
+      filasArray.forEach((fila, idx) => {
+        const radios = fila.querySelectorAll('input[type="radio"]');
+        radios.forEach(radio => {
+          radio.addEventListener('change', function() {
+            const siguienteIndice = idx + 1;
+            if (siguienteIndice < totalPreguntas) {
+              mostrarPregunta(siguienteIndice);
+            } else {
+              mostrarPregunta(idx);
+            }
+          });
+        });
+      });
+    });
+</script>
 </body>
 </html>
