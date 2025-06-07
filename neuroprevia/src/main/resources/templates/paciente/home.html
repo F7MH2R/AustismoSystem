@@ -6,19 +6,15 @@
     <link rel="stylesheet" th:href="@{/css/paciente.css}" />
 </head>
 <body class="bg-light">
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="text-center px-3">
-
-        <h1 class="home-title mb-3">
-            Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!
-        </h1>
-
-        <h2 class="home-title mb-3">
-        <span class="badge role-badge">
-          Rol: <span th:text="${usuario.rol}">Usuario</span>
-        </span>
-        </h2>
+<div class="container-fluid" th:style="'background-image: url(' + @{/img/psicologia.jpg} + '); background-size: cover; background-position: center; height: 100vh;'">
+    <div class=" row d-flex justify-content-center align-items-center vh-100">
+        <div class="text-center px-3">
+            <h1 class="home-title mb-3">
+                Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!
+            </h1>
+        </div>
     </div>
+
 </div>
 
 </body>
