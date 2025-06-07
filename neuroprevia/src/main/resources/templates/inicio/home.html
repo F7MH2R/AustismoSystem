@@ -8,22 +8,47 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="container mt-4">
+    <div class="container mt-4 mb-2">
         <div class="row">
-            <div class="col">
+            <div class="col home-title">
                 <h1 class="text-center">Bienvenido</h1>
             </div>
         </div>
         <div sec:authorize="isAnonymous()">
             <div class="row justify-content-center">
-                <div class="col col-auto">
-                    <p>Debes iniciar sesi&oacute;n para utilizar las funciones del sistema</p>
+                <div class="col col-auto home-title">
+                    <h3>Tu gu&iacute;a en la detecci&oacute;n del autismo</h3>
                 </div>
             </div>
         </div>
         <div sec:authorize="isAuthenticated()">
             <div class="row">
                 <p class="text-center" th:text="'Sesión iniciada como: ' + ${#authentication.name}"></p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col col-auto col-lg-10 col-sm-12">
+                <div id="carouselNeuro" class="carousel slide my-4" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img th:src="@{/img/carrousel/terapeuta.jpg}" class="d-block w-100" alt="Imagen 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img th:src="@{/img/carrousel/terapeuta-1.jpg}" class="d-block w-100" alt="Imagen 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img th:src="@{/img/carrousel/terapia.jpg}" class="d-block w-100" alt="Imagen 3">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselNeuro" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselNeuro" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

@@ -6,10 +6,9 @@
     <meta charset="UTF-8">
     <title>Inicio Especialista</title>
 </head>
-<body>
-<div class="home-title mb-3 mt-5"  layout:fragment="content">
-    <h1>Bienvenido, <span th:text="${usuario.nombre}">Usuario</span>!</h1>
-    <h1>Rol: <span th:text="${usuario.rol}">Usuario</span>!</h1>
+<body layout:fragment="content" th:style="'background-image: url(' + @{/img/psicologia.jpg} + '); background-size: cover; background-position: center; height: 100vh;'">
+<div class="container-fluid home-title mb-3 mt-5"  >
+    <h1>Bienvenido, Dr. <span th:text="${usuario.apellido}">Usuario</span>!</h1>
 </div>
 </body>
 </html>

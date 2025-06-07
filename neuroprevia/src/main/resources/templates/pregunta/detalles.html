@@ -37,7 +37,10 @@
                                 <label for="textoOpcion">Texto de la  opci&oacute;n:</label>
                                 <input type="text" name="textoRespuesta" id="textoOpcion" class="form-control" required>
                                 <input type="hidden" name="idPregunta" th:value="${pregunta.id}">
-                                <input type="hidden" name="valorNumerico" value="1">
+                            </div>
+                            <div class="mb-3">
+                                <label for="valorNumerico">Valor numerico:</label>
+                                <input type="number" name="valorNumerico" value="1" id="valorNumerico" min="1" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Agregar</button>
                         </form>

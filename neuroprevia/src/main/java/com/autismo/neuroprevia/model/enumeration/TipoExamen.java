@@ -8,9 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public enum TipoExamen {
-    INFANTIL("Infantil"),
-    ADULTO("Adulto"),
-    GENERAL("General");
+    ADULTO("Adulto");
 
     private final String value;
 }

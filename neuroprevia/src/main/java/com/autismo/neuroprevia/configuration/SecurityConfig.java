@@ -30,7 +30,7 @@ public class SecurityConfig {
                             auth.requestMatchers("/admin/**").hasRole(ADMIN);
                     auth.requestMatchers(
                             "/", "/login", "/logout",
-                            "/images/**", "/css/**", "/js/**",
+                            "/img/**", "/css/**", "/js/**",
                             "/registrarse/**", "/registrarPaciente/**"
                             , "/especialista/**", "/actuator/**"
                     ).permitAll(); // Si hay alguna ruta que este dando problemas, pueden agregarla aca, para probar
