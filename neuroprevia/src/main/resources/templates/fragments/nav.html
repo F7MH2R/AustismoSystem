@@ -25,6 +25,13 @@
 <!--                    <a class="nav-link" th:href="@{/registrodoctor}">Registro Doctor</a>-->
 <!--                </li>-->
 
+                <li class="nav-item nav-user" sec:authorize="isAuthenticated()">
+                    <span class="nav-text">
+                      Hola,
+                      <span th:text="${#authentication.principal.usuario.nombre}">Usuario</span>
+                    </span>
+                </li>
+
                 <!-- Paciente -->
                 <li class="nav-item" sec:authorize="hasRole('PACIENTE')">
                     <a class="nav-link" th:href="@{/paciente/home}">Inicio Paciente</a>
@@ -37,14 +44,6 @@
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('PACIENTE')">
                     <a th:href="@{/paciente/perfil}">Mi Perfil</a>
-                </li>
-
-                <!-- Usuario autenticado -->
-                <li class="nav-item nav-user" sec:authorize="isAuthenticated()">
-                    <span class="nav-text">
-                      Hola,
-                      <span th:text="${#authentication.principal.usuario.nombre}">Usuario</span>
-                    </span>
                 </li>
 
                 <!-- Doctor -->
