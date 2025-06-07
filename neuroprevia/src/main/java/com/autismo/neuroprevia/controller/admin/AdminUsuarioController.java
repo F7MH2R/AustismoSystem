@@ -2,19 +2,23 @@ package com.autismo.neuroprevia.controller.admin;
 
 import com.autismo.neuroprevia.model.Usuario;
 import com.autismo.neuroprevia.repository.usuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/usuarios")
 public class AdminUsuarioController {
 
+
     @Autowired
     private usuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 1. Listar todos los usuarios
     @GetMapping
@@ -35,9 +39,16 @@ public class AdminUsuarioController {
     @PostMapping("/guardar")
     public String guardarUsuario(@ModelAttribute Usuario usuario) {
         usuario.setActivo(true);
-        if (usuario.getRol().equals("DOCTOR")) {
-            usuario.setVerificado(false); // campo adicional que debes tener
+
+        // Encriptar si viene una contraseña (no vacía)
+        if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         }
+
+        if (usuario.getRol().equals("DOCTOR")) {
+            usuario.setVerificado(false);
+        }
+
         usuarioRepository.save(usuario);
         return "redirect:/admin/usuarios";
     }
@@ -53,9 +64,25 @@ public class AdminUsuarioController {
     // 5. Procesar edición
     @PostMapping("/editar")
     public String editarUsuario(@ModelAttribute Usuario usuario) {
-        usuarioRepository.save(usuario);
+        // Obtener usuario actual desde DB
+        Usuario existente = usuarioRepository.findById(usuario.getId()).orElseThrow();
+
+        // Si se proporcionó una nueva contraseña, se encripta
+        if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
+            existente.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        }
+
+        // Actualizar otros campos
+        existente.setNombre(usuario.getNombre());
+        existente.setCorreo(usuario.getCorreo());
+        existente.setRol(usuario.getRol());
+        existente.setActivo(usuario.isActivo());
+        existente.setVerificado(usuario.isVerificado());
+
+        usuarioRepository.save(existente);
         return "redirect:/admin/usuarios";
     }
+
 
     // 6. Activar/Desactivar usuario
     @PostMapping("/cambiar-estado/{id}")

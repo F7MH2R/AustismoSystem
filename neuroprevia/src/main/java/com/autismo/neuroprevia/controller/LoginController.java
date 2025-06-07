@@ -44,9 +44,10 @@ public class LoginController {
     }
 
     // Mostrar formulario de registro
-    @GetMapping("/registrarse")
-    public String mostrarRegistro(Model model) {
-        model.addAttribute("usuario", new Usuario());
+    @PostMapping("/registrarse")
+    public String registrarUsuario(@ModelAttribute("usuario") Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuarioService.save(usuario);
         return "general/registropaciente/registro";
     }
 
